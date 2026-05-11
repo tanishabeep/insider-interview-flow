@@ -12,12 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as EvaluatorRouteImport } from './routes/evaluator'
 import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as ArchiveRouteImport } from './routes/archive'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ArchiveSlugRouteImport } from './routes/archive.$slug'
-import { Route as ApiEvaluateRouteImport } from './routes/api/evaluate'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -34,19 +30,9 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EvaluatorRoute = EvaluatorRouteImport.update({
-  id: '/evaluator',
-  path: '/evaluator',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ArchiveRoute = ArchiveRouteImport.update({
-  id: '/archive',
-  path: '/archive',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -54,96 +40,43 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ArchiveSlugRoute = ArchiveSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => ArchiveRoute,
-} as any)
-const ApiEvaluateRoute = ApiEvaluateRouteImport.update({
-  id: '/api/evaluate',
-  path: '/api/evaluate',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/archive': typeof ArchiveRouteWithChildren
   '/dashboard': typeof DashboardRoute
-  '/evaluator': typeof EvaluatorRoute
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
-  '/api/evaluate': typeof ApiEvaluateRoute
-  '/archive/$slug': typeof ArchiveSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/archive': typeof ArchiveRouteWithChildren
   '/dashboard': typeof DashboardRoute
-  '/evaluator': typeof EvaluatorRoute
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
-  '/api/evaluate': typeof ApiEvaluateRoute
-  '/archive/$slug': typeof ArchiveSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/archive': typeof ArchiveRouteWithChildren
   '/dashboard': typeof DashboardRoute
-  '/evaluator': typeof EvaluatorRoute
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
-  '/api/evaluate': typeof ApiEvaluateRoute
-  '/archive/$slug': typeof ArchiveSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/archive'
-    | '/dashboard'
-    | '/evaluator'
-    | '/login'
-    | '/quiz'
-    | '/signup'
-    | '/api/evaluate'
-    | '/archive/$slug'
+  fullPaths: '/' | '/dashboard' | '/login' | '/quiz' | '/signup'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/archive'
-    | '/dashboard'
-    | '/evaluator'
-    | '/login'
-    | '/quiz'
-    | '/signup'
-    | '/api/evaluate'
-    | '/archive/$slug'
-  id:
-    | '__root__'
-    | '/'
-    | '/archive'
-    | '/dashboard'
-    | '/evaluator'
-    | '/login'
-    | '/quiz'
-    | '/signup'
-    | '/api/evaluate'
-    | '/archive/$slug'
+  to: '/' | '/dashboard' | '/login' | '/quiz' | '/signup'
+  id: '__root__' | '/' | '/dashboard' | '/login' | '/quiz' | '/signup'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ArchiveRoute: typeof ArchiveRouteWithChildren
   DashboardRoute: typeof DashboardRoute
-  EvaluatorRoute: typeof EvaluatorRoute
   LoginRoute: typeof LoginRoute
   QuizRoute: typeof QuizRoute
   SignupRoute: typeof SignupRoute
-  ApiEvaluateRoute: typeof ApiEvaluateRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -169,25 +102,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/evaluator': {
-      id: '/evaluator'
-      path: '/evaluator'
-      fullPath: '/evaluator'
-      preLoaderRoute: typeof EvaluatorRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/archive': {
-      id: '/archive'
-      path: '/archive'
-      fullPath: '/archive'
-      preLoaderRoute: typeof ArchiveRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -197,44 +116,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/archive/$slug': {
-      id: '/archive/$slug'
-      path: '/$slug'
-      fullPath: '/archive/$slug'
-      preLoaderRoute: typeof ArchiveSlugRouteImport
-      parentRoute: typeof ArchiveRoute
-    }
-    '/api/evaluate': {
-      id: '/api/evaluate'
-      path: '/api/evaluate'
-      fullPath: '/api/evaluate'
-      preLoaderRoute: typeof ApiEvaluateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
-interface ArchiveRouteChildren {
-  ArchiveSlugRoute: typeof ArchiveSlugRoute
-}
-
-const ArchiveRouteChildren: ArchiveRouteChildren = {
-  ArchiveSlugRoute: ArchiveSlugRoute,
-}
-
-const ArchiveRouteWithChildren =
-  ArchiveRoute._addFileChildren(ArchiveRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ArchiveRoute: ArchiveRouteWithChildren,
   DashboardRoute: DashboardRoute,
-  EvaluatorRoute: EvaluatorRoute,
   LoginRoute: LoginRoute,
   QuizRoute: QuizRoute,
   SignupRoute: SignupRoute,
-  ApiEvaluateRoute: ApiEvaluateRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
