@@ -22,8 +22,8 @@ export function Navbar() {
           </Link>
           <nav className="hidden items-center gap-7 text-sm font-medium text-muted-foreground md:flex">
             <Link to="/" hash="practice" className="transition-colors hover:text-foreground">Practice</Link>
-            <Link to="/" hash="current-affairs" className="transition-colors hover:text-foreground">Current Affairs</Link>
-            <Link to="/" hash="built-by" className="transition-colors hover:text-foreground">Built by</Link>
+            <Link to="/archive" className="transition-colors hover:text-foreground">Archive</Link>
+            <Link to="/evaluator" className="transition-colors hover:text-foreground">AI Evaluator</Link>
             <Link to="/" hash="pricing" className="transition-colors hover:text-foreground">Pricing</Link>
           </nav>
           <div className="flex items-center gap-2">
