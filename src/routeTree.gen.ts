@@ -15,6 +15,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ArchiveRouteImport } from './routes/archive'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArchiveSlugRouteImport } from './routes/archive.$slug'
 import { Route as ApiEvaluateRouteImport } from './routes/api/evaluate'
 
 const SignupRoute = SignupRouteImport.update({
@@ -47,6 +48,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArchiveSlugRoute = ArchiveSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ArchiveRoute,
+} as any)
 const ApiEvaluateRoute = ApiEvaluateRouteImport.update({
   id: '/api/evaluate',
   path: '/api/evaluate',
@@ -55,31 +61,34 @@ const ApiEvaluateRoute = ApiEvaluateRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/archive': typeof ArchiveRoute
+  '/archive': typeof ArchiveRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
   '/api/evaluate': typeof ApiEvaluateRoute
+  '/archive/$slug': typeof ArchiveSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/archive': typeof ArchiveRoute
+  '/archive': typeof ArchiveRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
   '/api/evaluate': typeof ApiEvaluateRoute
+  '/archive/$slug': typeof ArchiveSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/archive': typeof ArchiveRoute
+  '/archive': typeof ArchiveRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
   '/api/evaluate': typeof ApiEvaluateRoute
+  '/archive/$slug': typeof ArchiveSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/signup'
     | '/api/evaluate'
+    | '/archive/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +110,7 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/signup'
     | '/api/evaluate'
+    | '/archive/$slug'
   id:
     | '__root__'
     | '/'
@@ -109,11 +120,12 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/signup'
     | '/api/evaluate'
+    | '/archive/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ArchiveRoute: typeof ArchiveRoute
+  ArchiveRoute: typeof ArchiveRouteWithChildren
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
   QuizRoute: typeof QuizRoute
@@ -165,6 +177,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/archive/$slug': {
+      id: '/archive/$slug'
+      path: '/$slug'
+      fullPath: '/archive/$slug'
+      preLoaderRoute: typeof ArchiveSlugRouteImport
+      parentRoute: typeof ArchiveRoute
+    }
     '/api/evaluate': {
       id: '/api/evaluate'
       path: '/api/evaluate'
@@ -175,9 +194,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface ArchiveRouteChildren {
+  ArchiveSlugRoute: typeof ArchiveSlugRoute
+}
+
+const ArchiveRouteChildren: ArchiveRouteChildren = {
+  ArchiveSlugRoute: ArchiveSlugRoute,
+}
+
+const ArchiveRouteWithChildren =
+  ArchiveRoute._addFileChildren(ArchiveRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ArchiveRoute: ArchiveRoute,
+  ArchiveRoute: ArchiveRouteWithChildren,
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
   QuizRoute: QuizRoute,
