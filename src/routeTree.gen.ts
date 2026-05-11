@@ -14,6 +14,7 @@ import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiEvaluateRouteImport } from './routes/api/evaluate'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -40,6 +41,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiEvaluateRoute = ApiEvaluateRouteImport.update({
+  id: '/api/evaluate',
+  path: '/api/evaluate',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
+  '/api/evaluate': typeof ApiEvaluateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
+  '/api/evaluate': typeof ApiEvaluateRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,27 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
+  '/api/evaluate': typeof ApiEvaluateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/login' | '/quiz' | '/signup'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/quiz'
+    | '/signup'
+    | '/api/evaluate'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/login' | '/quiz' | '/signup'
-  id: '__root__' | '/' | '/dashboard' | '/login' | '/quiz' | '/signup'
+  to: '/' | '/dashboard' | '/login' | '/quiz' | '/signup' | '/api/evaluate'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/quiz'
+    | '/signup'
+    | '/api/evaluate'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +99,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   QuizRoute: typeof QuizRoute
   SignupRoute: typeof SignupRoute
+  ApiEvaluateRoute: typeof ApiEvaluateRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +139,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/evaluate': {
+      id: '/api/evaluate'
+      path: '/api/evaluate'
+      fullPath: '/api/evaluate'
+      preLoaderRoute: typeof ApiEvaluateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,7 +155,18 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   QuizRoute: QuizRoute,
   SignupRoute: SignupRoute,
+  ApiEvaluateRoute: ApiEvaluateRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
