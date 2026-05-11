@@ -14,7 +14,291 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      current_affairs_domain_stats: {
+        Row: {
+          accuracy: number
+          attempts: number
+          consistency: number
+          domain: string
+          id: string
+          retention: number
+          trend: number
+          updated_at: string
+          user_id: string
+          weak_areas: string[] | null
+        }
+        Insert: {
+          accuracy?: number
+          attempts?: number
+          consistency?: number
+          domain: string
+          id?: string
+          retention?: number
+          trend?: number
+          updated_at?: string
+          user_id: string
+          weak_areas?: string[] | null
+        }
+        Update: {
+          accuracy?: number
+          attempts?: number
+          consistency?: number
+          domain?: string
+          id?: string
+          retention?: number
+          trend?: number
+          updated_at?: string
+          user_id?: string
+          weak_areas?: string[] | null
+        }
+        Relationships: []
+      }
+      open_ended_responses: {
+        Row: {
+          answer: string
+          category: string | null
+          clarity_score: number | null
+          communication_score: number | null
+          confidence_score: number | null
+          created_at: string
+          evaluation: string | null
+          follow_up_questions: string[] | null
+          id: string
+          logical_consistency_score: number | null
+          originality_score: number | null
+          overall_score: number | null
+          question: string
+          strengths: string[] | null
+          user_id: string
+          weaknesses: string[] | null
+        }
+        Insert: {
+          answer: string
+          category?: string | null
+          clarity_score?: number | null
+          communication_score?: number | null
+          confidence_score?: number | null
+          created_at?: string
+          evaluation?: string | null
+          follow_up_questions?: string[] | null
+          id?: string
+          logical_consistency_score?: number | null
+          originality_score?: number | null
+          overall_score?: number | null
+          question: string
+          strengths?: string[] | null
+          user_id: string
+          weaknesses?: string[] | null
+        }
+        Update: {
+          answer?: string
+          category?: string | null
+          clarity_score?: number | null
+          communication_score?: number | null
+          confidence_score?: number | null
+          created_at?: string
+          evaluation?: string | null
+          follow_up_questions?: string[] | null
+          id?: string
+          logical_consistency_score?: number | null
+          originality_score?: number | null
+          overall_score?: number | null
+          question?: string
+          strengths?: string[] | null
+          user_id?: string
+          weaknesses?: string[] | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          current_affairs_score: number
+          email: string | null
+          hobbies: string[] | null
+          id: string
+          name: string | null
+          readiness_score: number
+          sop_interests: string | null
+          streak: number
+          stream: string | null
+          updated_at: string
+          xp: number
+        }
+        Insert: {
+          created_at?: string
+          current_affairs_score?: number
+          email?: string | null
+          hobbies?: string[] | null
+          id: string
+          name?: string | null
+          readiness_score?: number
+          sop_interests?: string | null
+          streak?: number
+          stream?: string | null
+          updated_at?: string
+          xp?: number
+        }
+        Update: {
+          created_at?: string
+          current_affairs_score?: number
+          email?: string | null
+          hobbies?: string[] | null
+          id?: string
+          name?: string | null
+          readiness_score?: number
+          sop_interests?: string | null
+          streak?: number
+          stream?: string | null
+          updated_at?: string
+          xp?: number
+        }
+        Relationships: []
+      }
+      quiz_attempts: {
+        Row: {
+          accuracy: number
+          category: string | null
+          completed_at: string
+          id: string
+          quiz_type: string
+          score: number
+          time_taken: number
+          user_id: string
+        }
+        Insert: {
+          accuracy?: number
+          category?: string | null
+          completed_at?: string
+          id?: string
+          quiz_type: string
+          score?: number
+          time_taken?: number
+          user_id: string
+        }
+        Update: {
+          accuracy?: number
+          category?: string | null
+          completed_at?: string
+          id?: string
+          quiz_type?: string
+          score?: number
+          time_taken?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      real_interview_archive: {
+        Row: {
+          best_answers: Json
+          candidate_background: string | null
+          created_at: string
+          difficulty: string | null
+          duration_minutes: number | null
+          grilling_themes: string[] | null
+          id: string
+          interview_flow: Json
+          lessons_learned: string[] | null
+          panel_type: string | null
+          slug: string
+          stress_moments: Json
+          tags: string[] | null
+          title: string
+          updated_at: string
+          weak_answers: Json
+        }
+        Insert: {
+          best_answers?: Json
+          candidate_background?: string | null
+          created_at?: string
+          difficulty?: string | null
+          duration_minutes?: number | null
+          grilling_themes?: string[] | null
+          id?: string
+          interview_flow?: Json
+          lessons_learned?: string[] | null
+          panel_type?: string | null
+          slug: string
+          stress_moments?: Json
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          weak_answers?: Json
+        }
+        Update: {
+          best_answers?: Json
+          candidate_background?: string | null
+          created_at?: string
+          difficulty?: string | null
+          duration_minutes?: number | null
+          grilling_themes?: string[] | null
+          id?: string
+          interview_flow?: Json
+          lessons_learned?: string[] | null
+          panel_type?: string | null
+          slug?: string
+          stress_moments?: Json
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          weak_answers?: Json
+        }
+        Relationships: []
+      }
+      streaks: {
+        Row: {
+          current_streak: number
+          history: Json
+          longest_streak: number
+          quiz_frequency: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          current_streak?: number
+          history?: Json
+          longest_streak?: number
+          quiz_frequency?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          current_streak?: number
+          history?: Json
+          longest_streak?: number
+          quiz_frequency?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      xp_progress: {
+        Row: {
+          achievements: Json
+          level: number
+          milestones: Json
+          updated_at: string
+          user_id: string
+          xp: number
+        }
+        Insert: {
+          achievements?: Json
+          level?: number
+          milestones?: Json
+          updated_at?: string
+          user_id: string
+          xp?: number
+        }
+        Update: {
+          achievements?: Json
+          level?: number
+          milestones?: Json
+          updated_at?: string
+          user_id?: string
+          xp?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
