@@ -177,13 +177,15 @@ function Mini({ icon, v, l }: { icon: React.ReactNode; v: string; l: string }) {
 
 function QuickActions() {
   const items = [
-    { to: "/quiz", icon: Newspaper, title: "Daily current affairs", body: "2-minute sprint · 8 questions", tone: "primary" },
-    { to: "/quiz", icon: Brain, title: "Adaptive cross-questioning", body: "Profile-based grilling chain", tone: "accent" },
-    { to: "/quiz", icon: UserSearch, title: "Profile grilling predictor", body: "Predicts your weakest surfaces", tone: "primary" },
-    { to: "/quiz", icon: Library, title: "Real interview archive", body: "Reconstructed transcripts", tone: "accent" },
+    { to: "/quiz", icon: Newspaper, title: "Quiz Engine",                body: "Pick a category — sprint in 2 min",      tone: "primary" },
+    { to: "/lab",  icon: Brain,     title: "Adaptive Interview Lab",     body: "Live AI panel that doesn't let go",       tone: "accent" },
+    { to: "/grilling", icon: UserSearch, title: "Profile Grilling Intel", body: "Map your weak surfaces & traps",        tone: "primary" },
+    { to: "/affairs",  icon: Globe2,     title: "Current Affairs Terminal", body: "Domain heatmap, trend, insights",     tone: "accent" },
+    { to: "/evaluator", icon: BarChart3, title: "AI Evaluation Studio",   body: "5-dimension answer scoring",            tone: "primary" },
+    { to: "/archive",   icon: Library,   title: "Real Interview Archive", body: "Reconstructed IIM panels",              tone: "accent" },
   ] as const;
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {items.map((it, i) => (
         <motion.div
           key={it.title}
