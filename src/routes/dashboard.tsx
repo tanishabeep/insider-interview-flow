@@ -360,7 +360,7 @@ function ProfileGrillingTeaser() {
         <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Profile grilling</div>
         <h3 className="mt-1 font-display text-lg font-semibold">Predict my weak surfaces</h3>
         <p className="mt-2 text-xs text-muted-foreground">Add your stream, hobbies and SOP — we map the panel's likely focus areas.</p>
-        <Link to="/quiz" className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-xs font-semibold text-background transition-transform hover:scale-[1.03]">
+        <Link to="/grilling" className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-xs font-semibold text-background transition-transform hover:scale-[1.03]">
           Build my profile <ArrowRight className="h-3 w-3" />
         </Link>
       </div>

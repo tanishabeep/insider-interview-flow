@@ -21,9 +21,11 @@ export function Navbar() {
             <span>IPM Ace</span>
           </Link>
           <nav className="hidden items-center gap-7 text-sm font-medium text-muted-foreground md:flex">
-            <Link to="/" hash="practice" className="transition-colors hover:text-foreground">Practice</Link>
+            <Link to="/quiz" className="transition-colors hover:text-foreground">Quiz</Link>
+            <Link to="/lab" className="transition-colors hover:text-foreground">Lab</Link>
+            <Link to="/grilling" className="transition-colors hover:text-foreground">Grilling</Link>
+            <Link to="/affairs" className="transition-colors hover:text-foreground">Affairs</Link>
             <Link to="/archive" className="transition-colors hover:text-foreground">Archive</Link>
-            <Link to="/evaluator" className="transition-colors hover:text-foreground">AI Evaluator</Link>
             <Link to="/" hash="pricing" className="transition-colors hover:text-foreground">Pricing</Link>
           </nav>
           <div className="flex items-center gap-2">
