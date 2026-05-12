@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as LabRouteImport } from './routes/lab'
 import { Route as GrillingRouteImport } from './routes/grilling'
 import { Route as EvaluatorRouteImport } from './routes/evaluator'
 import { Route as DashboardRouteImport } from './routes/dashboard'
@@ -35,6 +36,11 @@ const QuizRoute = QuizRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LabRoute = LabRouteImport.update({
+  id: '/lab',
+  path: '/lab',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GrillingRoute = GrillingRouteImport.update({
@@ -90,6 +96,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/evaluator': typeof EvaluatorRoute
   '/grilling': typeof GrillingRoute
+  '/lab': typeof LabRoute
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/evaluator': typeof EvaluatorRoute
   '/grilling': typeof GrillingRoute
+  '/lab': typeof LabRoute
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/evaluator': typeof EvaluatorRoute
   '/grilling': typeof GrillingRoute
+  '/lab': typeof LabRoute
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
@@ -135,6 +144,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/evaluator'
     | '/grilling'
+    | '/lab'
     | '/login'
     | '/quiz'
     | '/signup'
@@ -149,6 +159,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/evaluator'
     | '/grilling'
+    | '/lab'
     | '/login'
     | '/quiz'
     | '/signup'
@@ -163,6 +174,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/evaluator'
     | '/grilling'
+    | '/lab'
     | '/login'
     | '/quiz'
     | '/signup'
@@ -178,6 +190,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   EvaluatorRoute: typeof EvaluatorRoute
   GrillingRoute: typeof GrillingRoute
+  LabRoute: typeof LabRoute
   LoginRoute: typeof LoginRoute
   QuizRoute: typeof QuizRoute
   SignupRoute: typeof SignupRoute
@@ -206,6 +219,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lab': {
+      id: '/lab'
+      path: '/lab'
+      fullPath: '/lab'
+      preLoaderRoute: typeof LabRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/grilling': {
@@ -292,6 +312,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   EvaluatorRoute: EvaluatorRoute,
   GrillingRoute: GrillingRoute,
+  LabRoute: LabRoute,
   LoginRoute: LoginRoute,
   QuizRoute: QuizRoute,
   SignupRoute: SignupRoute,
