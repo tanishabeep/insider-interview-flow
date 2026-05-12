@@ -12,11 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as LabRouteImport } from './routes/lab'
+import { Route as GrillingRouteImport } from './routes/grilling'
 import { Route as EvaluatorRouteImport } from './routes/evaluator'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ArchiveRouteImport } from './routes/archive'
+import { Route as AffairsRouteImport } from './routes/affairs'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArchiveSlugRouteImport } from './routes/archive.$slug'
+import { Route as ApiGrillingRouteImport } from './routes/api/grilling'
 import { Route as ApiEvaluateRouteImport } from './routes/api/evaluate'
 
 const SignupRoute = SignupRouteImport.update({
@@ -34,6 +38,16 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LabRoute = LabRouteImport.update({
+  id: '/lab',
+  path: '/lab',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GrillingRoute = GrillingRouteImport.update({
+  id: '/grilling',
+  path: '/grilling',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EvaluatorRoute = EvaluatorRouteImport.update({
   id: '/evaluator',
   path: '/evaluator',
@@ -49,6 +63,11 @@ const ArchiveRoute = ArchiveRouteImport.update({
   path: '/archive',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AffairsRoute = AffairsRouteImport.update({
+  id: '/affairs',
+  path: '/affairs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -59,6 +78,11 @@ const ArchiveSlugRoute = ArchiveSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => ArchiveRoute,
 } as any)
+const ApiGrillingRoute = ApiGrillingRouteImport.update({
+  id: '/api/grilling',
+  path: '/api/grilling',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiEvaluateRoute = ApiEvaluateRouteImport.update({
   id: '/api/evaluate',
   path: '/api/evaluate',
@@ -67,83 +91,111 @@ const ApiEvaluateRoute = ApiEvaluateRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/affairs': typeof AffairsRoute
   '/archive': typeof ArchiveRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/evaluator': typeof EvaluatorRoute
+  '/grilling': typeof GrillingRoute
+  '/lab': typeof LabRoute
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
   '/api/evaluate': typeof ApiEvaluateRoute
+  '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/affairs': typeof AffairsRoute
   '/archive': typeof ArchiveRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/evaluator': typeof EvaluatorRoute
+  '/grilling': typeof GrillingRoute
+  '/lab': typeof LabRoute
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
   '/api/evaluate': typeof ApiEvaluateRoute
+  '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/affairs': typeof AffairsRoute
   '/archive': typeof ArchiveRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/evaluator': typeof EvaluatorRoute
+  '/grilling': typeof GrillingRoute
+  '/lab': typeof LabRoute
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
   '/api/evaluate': typeof ApiEvaluateRoute
+  '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/affairs'
     | '/archive'
     | '/dashboard'
     | '/evaluator'
+    | '/grilling'
+    | '/lab'
     | '/login'
     | '/quiz'
     | '/signup'
     | '/api/evaluate'
+    | '/api/grilling'
     | '/archive/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/affairs'
     | '/archive'
     | '/dashboard'
     | '/evaluator'
+    | '/grilling'
+    | '/lab'
     | '/login'
     | '/quiz'
     | '/signup'
     | '/api/evaluate'
+    | '/api/grilling'
     | '/archive/$slug'
   id:
     | '__root__'
     | '/'
+    | '/affairs'
     | '/archive'
     | '/dashboard'
     | '/evaluator'
+    | '/grilling'
+    | '/lab'
     | '/login'
     | '/quiz'
     | '/signup'
     | '/api/evaluate'
+    | '/api/grilling'
     | '/archive/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AffairsRoute: typeof AffairsRoute
   ArchiveRoute: typeof ArchiveRouteWithChildren
   DashboardRoute: typeof DashboardRoute
   EvaluatorRoute: typeof EvaluatorRoute
+  GrillingRoute: typeof GrillingRoute
+  LabRoute: typeof LabRoute
   LoginRoute: typeof LoginRoute
   QuizRoute: typeof QuizRoute
   SignupRoute: typeof SignupRoute
   ApiEvaluateRoute: typeof ApiEvaluateRoute
+  ApiGrillingRoute: typeof ApiGrillingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -169,6 +221,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lab': {
+      id: '/lab'
+      path: '/lab'
+      fullPath: '/lab'
+      preLoaderRoute: typeof LabRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/grilling': {
+      id: '/grilling'
+      path: '/grilling'
+      fullPath: '/grilling'
+      preLoaderRoute: typeof GrillingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/evaluator': {
       id: '/evaluator'
       path: '/evaluator'
@@ -190,6 +256,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArchiveRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/affairs': {
+      id: '/affairs'
+      path: '/affairs'
+      fullPath: '/affairs'
+      preLoaderRoute: typeof AffairsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -203,6 +276,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/archive/$slug'
       preLoaderRoute: typeof ArchiveSlugRouteImport
       parentRoute: typeof ArchiveRoute
+    }
+    '/api/grilling': {
+      id: '/api/grilling'
+      path: '/api/grilling'
+      fullPath: '/api/grilling'
+      preLoaderRoute: typeof ApiGrillingRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/evaluate': {
       id: '/api/evaluate'
@@ -227,13 +307,17 @@ const ArchiveRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AffairsRoute: AffairsRoute,
   ArchiveRoute: ArchiveRouteWithChildren,
   DashboardRoute: DashboardRoute,
   EvaluatorRoute: EvaluatorRoute,
+  GrillingRoute: GrillingRoute,
+  LabRoute: LabRoute,
   LoginRoute: LoginRoute,
   QuizRoute: QuizRoute,
   SignupRoute: SignupRoute,
   ApiEvaluateRoute: ApiEvaluateRoute,
+  ApiGrillingRoute: ApiGrillingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

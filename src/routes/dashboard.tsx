@@ -177,13 +177,15 @@ function Mini({ icon, v, l }: { icon: React.ReactNode; v: string; l: string }) {
 
 function QuickActions() {
   const items = [
-    { to: "/quiz", icon: Newspaper, title: "Daily current affairs", body: "2-minute sprint · 8 questions", tone: "primary" },
-    { to: "/quiz", icon: Brain, title: "Adaptive cross-questioning", body: "Profile-based grilling chain", tone: "accent" },
-    { to: "/quiz", icon: UserSearch, title: "Profile grilling predictor", body: "Predicts your weakest surfaces", tone: "primary" },
-    { to: "/quiz", icon: Library, title: "Real interview archive", body: "Reconstructed transcripts", tone: "accent" },
+    { to: "/quiz", icon: Newspaper, title: "Quiz Engine",                body: "Pick a category — sprint in 2 min",      tone: "primary" },
+    { to: "/lab",  icon: Brain,     title: "Adaptive Interview Lab",     body: "Live AI panel that doesn't let go",       tone: "accent" },
+    { to: "/grilling", icon: UserSearch, title: "Profile Grilling Intel", body: "Map your weak surfaces & traps",        tone: "primary" },
+    { to: "/affairs",  icon: Globe2,     title: "Current Affairs Terminal", body: "Domain heatmap, trend, insights",     tone: "accent" },
+    { to: "/evaluator", icon: BarChart3, title: "AI Evaluation Studio",   body: "5-dimension answer scoring",            tone: "primary" },
+    { to: "/archive",   icon: Library,   title: "Real Interview Archive", body: "Reconstructed IIM panels",              tone: "accent" },
   ] as const;
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {items.map((it, i) => (
         <motion.div
           key={it.title}
@@ -358,7 +360,7 @@ function ProfileGrillingTeaser() {
         <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Profile grilling</div>
         <h3 className="mt-1 font-display text-lg font-semibold">Predict my weak surfaces</h3>
         <p className="mt-2 text-xs text-muted-foreground">Add your stream, hobbies and SOP — we map the panel's likely focus areas.</p>
-        <Link to="/quiz" className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-xs font-semibold text-background transition-transform hover:scale-[1.03]">
+        <Link to="/grilling" className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-xs font-semibold text-background transition-transform hover:scale-[1.03]">
           Build my profile <ArrowRight className="h-3 w-3" />
         </Link>
       </div>
