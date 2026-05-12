@@ -15,6 +15,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as EvaluatorRouteImport } from './routes/evaluator'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ArchiveRouteImport } from './routes/archive'
+import { Route as AffairsRouteImport } from './routes/affairs'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArchiveSlugRouteImport } from './routes/archive.$slug'
 import { Route as ApiEvaluateRouteImport } from './routes/api/evaluate'
@@ -49,6 +50,11 @@ const ArchiveRoute = ArchiveRouteImport.update({
   path: '/archive',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AffairsRoute = AffairsRouteImport.update({
+  id: '/affairs',
+  path: '/affairs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -67,6 +73,7 @@ const ApiEvaluateRoute = ApiEvaluateRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/affairs': typeof AffairsRoute
   '/archive': typeof ArchiveRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/evaluator': typeof EvaluatorRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/affairs': typeof AffairsRoute
   '/archive': typeof ArchiveRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/evaluator': typeof EvaluatorRoute
@@ -90,6 +98,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/affairs': typeof AffairsRoute
   '/archive': typeof ArchiveRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/evaluator': typeof EvaluatorRoute
@@ -103,6 +112,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/affairs'
     | '/archive'
     | '/dashboard'
     | '/evaluator'
@@ -114,6 +124,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/affairs'
     | '/archive'
     | '/dashboard'
     | '/evaluator'
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/affairs'
     | '/archive'
     | '/dashboard'
     | '/evaluator'
@@ -137,6 +149,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AffairsRoute: typeof AffairsRoute
   ArchiveRoute: typeof ArchiveRouteWithChildren
   DashboardRoute: typeof DashboardRoute
   EvaluatorRoute: typeof EvaluatorRoute
@@ -190,6 +203,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArchiveRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/affairs': {
+      id: '/affairs'
+      path: '/affairs'
+      fullPath: '/affairs'
+      preLoaderRoute: typeof AffairsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -227,6 +247,7 @@ const ArchiveRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AffairsRoute: AffairsRoute,
   ArchiveRoute: ArchiveRouteWithChildren,
   DashboardRoute: DashboardRoute,
   EvaluatorRoute: EvaluatorRoute,
