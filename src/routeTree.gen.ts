@@ -18,6 +18,7 @@ import { Route as ArchiveRouteImport } from './routes/archive'
 import { Route as AffairsRouteImport } from './routes/affairs'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArchiveSlugRouteImport } from './routes/archive.$slug'
+import { Route as ApiGrillingRouteImport } from './routes/api/grilling'
 import { Route as ApiEvaluateRouteImport } from './routes/api/evaluate'
 
 const SignupRoute = SignupRouteImport.update({
@@ -65,6 +66,11 @@ const ArchiveSlugRoute = ArchiveSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => ArchiveRoute,
 } as any)
+const ApiGrillingRoute = ApiGrillingRouteImport.update({
+  id: '/api/grilling',
+  path: '/api/grilling',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiEvaluateRoute = ApiEvaluateRouteImport.update({
   id: '/api/evaluate',
   path: '/api/evaluate',
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
   '/api/evaluate': typeof ApiEvaluateRoute
+  '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
 }
 export interface FileRoutesByTo {
@@ -93,6 +100,7 @@ export interface FileRoutesByTo {
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
   '/api/evaluate': typeof ApiEvaluateRoute
+  '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
 }
 export interface FileRoutesById {
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   '/quiz': typeof QuizRoute
   '/signup': typeof SignupRoute
   '/api/evaluate': typeof ApiEvaluateRoute
+  '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
 }
 export interface FileRouteTypes {
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/signup'
     | '/api/evaluate'
+    | '/api/grilling'
     | '/archive/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/signup'
     | '/api/evaluate'
+    | '/api/grilling'
     | '/archive/$slug'
   id:
     | '__root__'
@@ -144,6 +155,7 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/signup'
     | '/api/evaluate'
+    | '/api/grilling'
     | '/archive/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -157,6 +169,7 @@ export interface RootRouteChildren {
   QuizRoute: typeof QuizRoute
   SignupRoute: typeof SignupRoute
   ApiEvaluateRoute: typeof ApiEvaluateRoute
+  ApiGrillingRoute: typeof ApiGrillingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -224,6 +237,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArchiveSlugRouteImport
       parentRoute: typeof ArchiveRoute
     }
+    '/api/grilling': {
+      id: '/api/grilling'
+      path: '/api/grilling'
+      fullPath: '/api/grilling'
+      preLoaderRoute: typeof ApiGrillingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/evaluate': {
       id: '/api/evaluate'
       path: '/api/evaluate'
@@ -255,6 +275,7 @@ const rootRouteChildren: RootRouteChildren = {
   QuizRoute: QuizRoute,
   SignupRoute: SignupRoute,
   ApiEvaluateRoute: ApiEvaluateRoute,
+  ApiGrillingRoute: ApiGrillingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
