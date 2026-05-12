@@ -1,11 +1,13 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Sparkles, LogOut, Brain, Newspaper, Library, UserSearch,
-  Flame, TrendingUp, Activity, Target, ArrowRight, BarChart3, Globe2,
+  Flame, TrendingUp, TrendingDown, Activity, Target, ArrowRight, BarChart3, Globe2,
+  Zap, ShieldAlert,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/dashboard")({
   component: Dashboard,
@@ -38,6 +40,7 @@ function Dashboard() {
         <div className="mt-8 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
           <div className="space-y-6">
             <ReadinessHero />
+            <EvaluatorInsights />
             <QuickActions />
             <RecentSessions />
           </div>
