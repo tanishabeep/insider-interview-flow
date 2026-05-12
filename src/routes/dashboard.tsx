@@ -1,11 +1,13 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Sparkles, LogOut, Brain, Newspaper, Library, UserSearch,
-  Flame, TrendingUp, Activity, Target, ArrowRight, BarChart3, Globe2,
+  Flame, TrendingUp, TrendingDown, Activity, Target, ArrowRight, BarChart3, Globe2,
+  Zap, ShieldAlert,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/dashboard")({
   component: Dashboard,
@@ -38,6 +40,7 @@ function Dashboard() {
         <div className="mt-8 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
           <div className="space-y-6">
             <ReadinessHero />
+            <EvaluatorInsights />
             <QuickActions />
             <RecentSessions />
           </div>
@@ -359,6 +362,240 @@ function ProfileGrillingTeaser() {
           Build my profile <ArrowRight className="h-3 w-3" />
         </Link>
       </div>
+    </motion.div>
+  );
+}
+
+type EvalRow = {
+  id: string;
+  created_at: string;
+  category: string | null;
+  question: string;
+  overall_score: number | null;
+  confidence_score: number | null;
+  communication_score: number | null;
+  clarity_score: number | null;
+  originality_score: number | null;
+  logical_consistency_score: number | null;
+  strengths: string[] | null;
+  weaknesses: string[] | null;
+};
+
+function EvaluatorInsights() {
+  const [rows, setRows] = useState<EvalRow[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    supabase
+      .from("open_ended_responses")
+      .select("id,created_at,category,question,overall_score,confidence_score,communication_score,clarity_score,originality_score,logical_consistency_score,strengths,weaknesses")
+      .order("created_at", { ascending: true })
+      .limit(50)
+      .then(({ data, error }) => {
+        if (!alive) return;
+        if (error) setError(error.message);
+        else setRows((data ?? []) as EvalRow[]);
+      });
+    return () => { alive = false; };
+  }, []);
+
+  const stats = useMemo(() => {
+    if (!rows || rows.length === 0) return null;
+    const dims = ["confidence_score","communication_score","clarity_score","originality_score","logical_consistency_score"] as const;
+    const labels: Record<string, string> = {
+      confidence_score: "Confidence",
+      communication_score: "Communication",
+      clarity_score: "Clarity",
+      originality_score: "Originality",
+      logical_consistency_score: "Logic",
+    };
+    const avg = (k: typeof dims[number]) => {
+      const vals = rows.map(r => Number(r[k] ?? 0)).filter(v => v > 0);
+      return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : 0;
+    };
+    const dimAverages = dims.map(k => ({ key: k, label: labels[k], value: avg(k) }));
+    const sorted = [...dimAverages].sort((a, b) => b.value - a.value);
+    const strongest = sorted.slice(0, 2);
+    const weakest = sorted.slice(-2).reverse();
+
+    const trend = rows
+      .map(r => Number(r.overall_score ?? 0))
+      .filter(v => v > 0);
+    const trendDelta = trend.length >= 2
+      ? trend[trend.length - 1] - trend[0]
+      : 0;
+
+    const strengthsBag = new Map<string, number>();
+    const weaknessBag = new Map<string, number>();
+    rows.forEach(r => {
+      (r.strengths ?? []).forEach(s => strengthsBag.set(s, (strengthsBag.get(s) ?? 0) + 1));
+      (r.weaknesses ?? []).forEach(s => weaknessBag.set(s, (weaknessBag.get(s) ?? 0) + 1));
+    });
+    const topStrengths = [...strengthsBag.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map(e => e[0]);
+    const topWeaknesses = [...weaknessBag.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map(e => e[0]);
+
+    return { dimAverages, strongest, weakest, trend, trendDelta, topStrengths, topWeaknesses };
+  }, [rows]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.08, duration: 0.6 }}
+      className="glass-panel relative overflow-hidden rounded-3xl p-7"
+    >
+      <div className="absolute -left-16 -bottom-16 h-56 w-56 rounded-full bg-gradient-to-tr from-accent/20 to-primary/15 blur-3xl" aria-hidden />
+      <div className="relative flex items-start justify-between">
+        <div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">AI Evaluator intelligence</div>
+          <div className="font-display text-lg font-semibold">Strengths, weaknesses & trend</div>
+        </div>
+        <Link to="/evaluator" className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-[11px] font-semibold text-muted-foreground transition-colors hover:text-foreground">
+          Open evaluator <ArrowRight className="h-3 w-3" />
+        </Link>
+      </div>
+
+      {error && <div className="relative mt-4 text-xs text-destructive">{error}</div>}
+
+      {!rows && !error && (
+        <div className="relative mt-6 h-24 animate-pulse rounded-2xl bg-muted/60" />
+      )}
+
+      {rows && rows.length === 0 && (
+        <div className="relative mt-6 rounded-2xl border border-dashed border-border p-6 text-center">
+          <p className="text-sm text-muted-foreground">No evaluator runs yet. Drop your first answer in the AI evaluator and it will appear here — strengths, weaknesses, and your trend over time.</p>
+          <Link to="/evaluator" className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-primary to-primary-glow px-4 py-2 text-xs font-semibold text-primary-foreground transition-transform hover:scale-[1.03]">
+            Try the evaluator <ArrowRight className="h-3 w-3" />
+          </Link>
+        </div>
+      )}
+
+      {stats && (
+        <div className="relative mt-5 grid gap-5 md:grid-cols-[1fr_auto]">
+          <div className="space-y-3">
+            {stats.dimAverages.map((d, i) => (
+              <div key={d.key}>
+                <div className="mb-1 flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">{d.label}</span>
+                  <span className="font-semibold">{d.value.toFixed(1)}<span className="text-muted-foreground">/10</span></span>
+                </div>
+                <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(d.value / 10) * 100}%` }}
+                    transition={{ delay: 0.2 + i * 0.07, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                    className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+          <TrendSpark values={stats.trend} delta={stats.trendDelta} />
+        </div>
+      )}
+
+      {stats && (
+        <div className="relative mt-5 grid gap-3 md:grid-cols-2">
+          <InsightChip
+            tone="positive"
+            icon={<Zap className="h-3.5 w-3.5" />}
+            title="Strongest dimensions"
+            items={stats.strongest.map(s => `${s.label} · ${s.value.toFixed(1)}`)}
+            extras={stats.topStrengths}
+          />
+          <InsightChip
+            tone="warning"
+            icon={<ShieldAlert className="h-3.5 w-3.5" />}
+            title="Areas to drill"
+            items={stats.weakest.map(s => `${s.label} · ${s.value.toFixed(1)}`)}
+            extras={stats.topWeaknesses}
+          />
+        </div>
+      )}
+    </motion.div>
+  );
+}
+
+function TrendSpark({ values, delta }: { values: number[]; delta: number }) {
+  if (values.length < 2) {
+    return (
+      <div className="flex w-36 flex-col items-end justify-center rounded-2xl border border-border bg-card/70 p-3 text-right">
+        <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Trend</div>
+        <div className="font-display text-base font-semibold">Building…</div>
+      </div>
+    );
+  }
+  const w = 140, h = 60, pad = 6;
+  const min = Math.min(...values), max = Math.max(...values);
+  const range = max - min || 1;
+  const points = values.map((v, i) => {
+    const x = pad + (i * (w - pad * 2)) / (values.length - 1);
+    const y = h - pad - ((v - min) / range) * (h - pad * 2);
+    return `${x},${y}`;
+  }).join(" ");
+  const positive = delta >= 0;
+  return (
+    <div className="flex w-40 flex-col items-end rounded-2xl border border-border bg-card/70 p-3">
+      <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Overall trend</div>
+      <svg viewBox={`0 0 ${w} ${h}`} className="mt-1 w-full">
+        <motion.polyline
+          fill="none"
+          stroke="url(#trendGrad)"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          points={points}
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 1 }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+        />
+        <defs>
+          <linearGradient id="trendGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="oklch(0.45 0.22 270)" />
+            <stop offset="100%" stopColor="oklch(0.62 0.24 285)" />
+          </linearGradient>
+        </defs>
+      </svg>
+      <div className={`mt-1 inline-flex items-center gap-1 text-[11px] font-semibold ${positive ? "text-success" : "text-destructive"}`}>
+        {positive ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
+        {positive ? "+" : ""}{delta.toFixed(1)} pts
+      </div>
+    </div>
+  );
+}
+
+function InsightChip({
+  tone, icon, title, items, extras,
+}: {
+  tone: "positive" | "warning";
+  icon: React.ReactNode;
+  title: string;
+  items: string[];
+  extras: string[];
+}) {
+  const ring = tone === "positive" ? "from-success/15 to-success/5" : "from-warning/15 to-warning/5";
+  const dot = tone === "positive" ? "bg-success" : "bg-warning";
+  return (
+    <motion.div whileHover={{ y: -2 }} className={`rounded-2xl border border-border bg-gradient-to-br ${ring} p-4`}>
+      <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-foreground/80">
+        {icon} {title}
+      </div>
+      <div className="mt-2 space-y-1">
+        {items.map((i) => (
+          <div key={i} className="text-xs font-medium">{i}</div>
+        ))}
+      </div>
+      {extras.length > 0 && (
+        <div className="mt-3 space-y-1 border-t border-border/60 pt-2">
+          {extras.map((e) => (
+            <div key={e} className="flex items-start gap-1.5 text-[11px] text-muted-foreground">
+              <span className={`mt-1 inline-block h-1 w-1 rounded-full ${dot}`} />
+              <span>{e}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </motion.div>
   );
 }
