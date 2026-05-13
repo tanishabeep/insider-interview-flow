@@ -25,6 +25,14 @@ export function CurrentAffairs() {
             Most aspirants struggle with consistency, retention, and forming opinions worth defending.
             We rebuild that muscle through micro-sprints, opinion drills, and adaptive cross-questioning.
           </p>
+          <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-border bg-card/70 px-4 py-1.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-success" />
+            47 panel reconstructions indexed
+            <span className="text-border-strong">·</span>
+            Last added: IIM A stress interview, March 2024
+            <span className="text-border-strong">·</span>
+            Next: IIM C finance grilling chain
+          </div>
         </motion.div>
 
         <div className="mt-16 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
