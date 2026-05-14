@@ -5,6 +5,7 @@ import { ArrowLeft, Brain, Send, Loader2, Sparkles, MessageSquare, Bot, User as 
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
 import { sfx } from "@/lib/sounds";
+import { DashShell } from "@/components/dash/Sidebar";
 
 export const Route = createFileRoute("/lab")({
   component: LabPage,
@@ -73,7 +74,7 @@ function LabPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-surface">
+    <DashShell><div className="min-h-screen bg-surface">
       <div className="mx-auto max-w-5xl px-6 py-8">
         <Link to="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Dashboard
@@ -130,7 +131,7 @@ function LabPage() {
           </div>
         </div>
       </div>
-    </div>
+    </div></DashShell>
   );
 }
 
