@@ -37,6 +37,7 @@ export function Pricing() {
               "Profile grilling predictor",
               "Daily readiness analytics",
               "Real interview experience archive",
+              "The week before your interview, switch to The Day Before Protocol. Included.",
             ]}
             cta="Start sprint"
           />
@@ -53,6 +54,7 @@ export function Pricing() {
               "Streak engine with weekly insights",
               "Personalised opinion drills",
               "Priority feedback on AI evaluations",
+              "The system remembers every answer you've ever given. It will catch your contradictions before the panel does.",
             ]}
             cta="Commit to protocol"
           />
