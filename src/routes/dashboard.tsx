@@ -3,13 +3,17 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Sparkles, LogOut, Brain, Newspaper, Library, UserSearch,
-  Flame, TrendingUp, TrendingDown, Activity, Target, ArrowRight, BarChart3, Globe2,
-  Zap, ShieldAlert,
+  TrendingUp, TrendingDown, Activity, Target, ArrowRight, BarChart3, Globe2,
+  Zap,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { DashShell } from "@/components/dash/Sidebar";
 import { RecommendedPath } from "@/components/dash/RecommendedPath";
+import {
+  IllQuiz, IllInterview, IllProfile, IllGlobe, IllBooks, IllAnalytics,
+  IllFlame, IllShield,
+} from "@/components/illustrations";
 
 export const Route = createFileRoute("/dashboard")({
   component: Dashboard,
@@ -37,19 +41,19 @@ function Dashboard() {
     <DashShell>
       <DashHeader name={firstName} onSignOut={() => signOut().then(() => nav({ to: "/" }))} />
 
-      <div className="mx-auto max-w-7xl px-6 pb-20 pt-8">
+      <div className="mx-auto max-w-7xl px-6 md:px-12 xl:px-16 pb-24 pt-8">
         <Greeting name={firstName} />
-        <div className="mt-6">
+        <div className="mt-12">
           <RecommendedPath />
         </div>
-        <div className="mt-8 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
-          <div className="space-y-6">
+        <div className="mt-10 grid gap-10 lg:grid-cols-[1.5fr_1fr]">
+          <div className="space-y-8">
             <ReadinessHero />
             <EvaluatorInsights />
             <QuickActions />
             <RecentSessions />
           </div>
-          <div className="space-y-6">
+          <div className="space-y-8">
             <CurrentAffairsPanel />
             <StreakCard />
             <ProfileGrillingTeaser />
