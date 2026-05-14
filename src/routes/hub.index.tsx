@@ -11,10 +11,10 @@ export const Route = createFileRoute("/hub/")({
 
 const FEATURES = [
   { id: "panel-intel", name: "IIM Panel Intelligence", desc: "What each IIM panel actually tests.", icon: Sparkles, status: "active", to: "/hub/panel-intel" },
-  { id: "memory", name: "Memory & Coherence", desc: "Tracks your positions over time. Catches contradictions.", icon: Brain, status: "soon" },
-  { id: "day-before", name: "Day Before Protocol", desc: "Unlocks 72 hours before your interview date.", icon: Calendar, status: "soon" },
-  { id: "attack-map", name: "Profile Attack Map", desc: "The eight to twelve points a panel will press first.", icon: Crosshair, status: "soon" },
-  { id: "consistency", name: "Opinion Consistency Tracker", desc: "Defensible positions topic by topic.", icon: GitCompare, status: "soon" },
+  { id: "memory", name: "Memory & Coherence", desc: "Tracks your positions over time. Catches contradictions.", icon: Brain, status: "active", to: "/hub/memory" },
+  { id: "day-before", name: "Day Before Protocol", desc: "Unlocks 72 hours before your interview date.", icon: Calendar, status: "active", to: "/hub/day-before" },
+  { id: "attack-map", name: "Profile Attack Map", desc: "The eight to twelve points a panel will press first.", icon: Crosshair, status: "active", to: "/hub/attack-map" },
+  { id: "consistency", name: "Opinion Consistency Tracker", desc: "Defensible positions topic by topic.", icon: GitCompare, status: "active", to: "/hub/consistency" },
 ] as const;
 
 function HubLanding() {
