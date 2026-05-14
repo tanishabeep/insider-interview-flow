@@ -6,6 +6,7 @@ import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { CATEGORY_META, getBank, QUIZ_BANKS, type QuizCategory, type QuizQuestion } from "@/lib/quiz-banks";
 import { sfx, isSoundOn, setSound } from "@/lib/sounds";
+import { DashShell } from "@/components/dash/Sidebar";
 
 type Search = { c?: QuizCategory };
 
@@ -24,8 +25,11 @@ function QuizPage() {
   useEffect(() => { if (!loading && !user) nav({ to: "/login" }); }, [user, loading, nav]);
 
   if (!user) return null;
-  if (!c) return <CategoryPicker />;
-  return <Sprint category={c} userId={user.id} />;
+  return (
+    <DashShell>
+      {!c ? <CategoryPicker /> : <Sprint category={c} userId={user.id} />}
+    </DashShell>
+  );
 }
 
 function CategoryPicker() {
