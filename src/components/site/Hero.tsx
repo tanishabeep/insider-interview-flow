@@ -32,8 +32,7 @@ export function Hero() {
               I built this so you do too.
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground md:text-[17px]">
-              Most people walk in having practiced answers. The panel is testing whether you have a mind worth arguing with.
-              There is a difference. And most coaching mocks miss it entirely.
+              Most people walk in with practiced answers. The panel wants to see how you think, not what you've memorised. That gap is what this is built for.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -77,7 +76,7 @@ function FounderByline() {
       <div className="text-xs leading-relaxed">
         <div className="font-semibold text-foreground">Ishaan Arora · IIM Indore, IPM 2027 batch</div>
         <div className="mt-0.5 text-muted-foreground">
-          Built this after noticing every mock interview platform was preparing aspirants for the wrong interview.
+          Built this after realising every mock platform was preparing people for an interview that doesn't actually happen.
         </div>
       </div>
     </motion.div>
