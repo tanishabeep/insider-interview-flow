@@ -23,6 +23,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as HubIndexRouteImport } from './routes/hub.index'
 import { Route as HubPanelIntelRouteImport } from './routes/hub.panel-intel'
 import { Route as HubMemoryRouteImport } from './routes/hub.memory'
+import { Route as HubDayBeforeRouteImport } from './routes/hub.day-before'
 import { Route as ArchiveSlugRouteImport } from './routes/archive.$slug'
 import { Route as ApiGrillingRouteImport } from './routes/api/grilling'
 import { Route as ApiEvaluateRouteImport } from './routes/api/evaluate'
@@ -97,6 +98,11 @@ const HubMemoryRoute = HubMemoryRouteImport.update({
   path: '/memory',
   getParentRoute: () => HubRoute,
 } as any)
+const HubDayBeforeRoute = HubDayBeforeRouteImport.update({
+  id: '/day-before',
+  path: '/day-before',
+  getParentRoute: () => HubRoute,
+} as any)
 const ArchiveSlugRoute = ArchiveSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -128,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/api/evaluate': typeof ApiEvaluateRoute
   '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
+  '/hub/day-before': typeof HubDayBeforeRoute
   '/hub/memory': typeof HubMemoryRoute
   '/hub/panel-intel': typeof HubPanelIntelRoute
   '/hub/': typeof HubIndexRoute
@@ -146,6 +153,7 @@ export interface FileRoutesByTo {
   '/api/evaluate': typeof ApiEvaluateRoute
   '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
+  '/hub/day-before': typeof HubDayBeforeRoute
   '/hub/memory': typeof HubMemoryRoute
   '/hub/panel-intel': typeof HubPanelIntelRoute
   '/hub': typeof HubIndexRoute
@@ -166,6 +174,7 @@ export interface FileRoutesById {
   '/api/evaluate': typeof ApiEvaluateRoute
   '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
+  '/hub/day-before': typeof HubDayBeforeRoute
   '/hub/memory': typeof HubMemoryRoute
   '/hub/panel-intel': typeof HubPanelIntelRoute
   '/hub/': typeof HubIndexRoute
@@ -187,6 +196,7 @@ export interface FileRouteTypes {
     | '/api/evaluate'
     | '/api/grilling'
     | '/archive/$slug'
+    | '/hub/day-before'
     | '/hub/memory'
     | '/hub/panel-intel'
     | '/hub/'
@@ -205,6 +215,7 @@ export interface FileRouteTypes {
     | '/api/evaluate'
     | '/api/grilling'
     | '/archive/$slug'
+    | '/hub/day-before'
     | '/hub/memory'
     | '/hub/panel-intel'
     | '/hub'
@@ -224,6 +235,7 @@ export interface FileRouteTypes {
     | '/api/evaluate'
     | '/api/grilling'
     | '/archive/$slug'
+    | '/hub/day-before'
     | '/hub/memory'
     | '/hub/panel-intel'
     | '/hub/'
@@ -345,6 +357,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HubMemoryRouteImport
       parentRoute: typeof HubRoute
     }
+    '/hub/day-before': {
+      id: '/hub/day-before'
+      path: '/day-before'
+      fullPath: '/hub/day-before'
+      preLoaderRoute: typeof HubDayBeforeRouteImport
+      parentRoute: typeof HubRoute
+    }
     '/archive/$slug': {
       id: '/archive/$slug'
       path: '/$slug'
@@ -381,12 +400,14 @@ const ArchiveRouteWithChildren =
   ArchiveRoute._addFileChildren(ArchiveRouteChildren)
 
 interface HubRouteChildren {
+  HubDayBeforeRoute: typeof HubDayBeforeRoute
   HubMemoryRoute: typeof HubMemoryRoute
   HubPanelIntelRoute: typeof HubPanelIntelRoute
   HubIndexRoute: typeof HubIndexRoute
 }
 
 const HubRouteChildren: HubRouteChildren = {
+  HubDayBeforeRoute: HubDayBeforeRoute,
   HubMemoryRoute: HubMemoryRoute,
   HubPanelIntelRoute: HubPanelIntelRoute,
   HubIndexRoute: HubIndexRoute,
