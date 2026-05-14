@@ -8,13 +8,11 @@ const FEATURES = [
   {
     n: "01",
     icon: Brain,
-    title: "IIM-specific panel intelligence",
+    title: "Every answer you give becomes the next question.",
     body: [
-      "IIM A doesn't ask the same kind of questions as IIM C. Coaching center mocks pretend they do.",
-      "Each panel has its own grilling style — first-principles stress, quant ambushes, ethics traps.",
-      "We mapped every one from reconstructed interviews so you walk in knowing the room.",
+      "The system follows your logic wherever it goes. That's what a real panel does.",
     ],
-    example: '"You said you switched from engineering for impact. Define impact in numbers, please." — IIM A panel, Mar 2024.',
+    example: '"You said you switched from engineering for impact. Define impact in numbers, please." IIM A panel, Mar 2024.',
     cta: "See your panel",
     to: "/dashboard",
     accent: "from-primary/15 to-primary/5",
@@ -23,12 +21,11 @@ const FEATURES = [
   {
     n: "02",
     icon: Layers,
-    title: "Answer memory & contradiction detection",
+    title: "Your SOP has gaps. We find them before the panel does.",
     body: [
-      "Most people give different answers to the same question depending on the framing. The panel notices.",
-      "The system logs every position you take, then flags contradictions across sessions before a panelist does.",
+      "Add your background and we map every angle they're likely to press on.",
     ],
-    example: 'In your SOP: "stability matters most." In your last mock: "I want to start up." Pick one — and defend it.',
+    example: 'In your SOP: "stability matters most." In your last mock: "I want to start up." Pick one and defend it.',
     cta: "Check my coherence",
     to: "/dashboard",
     accent: "from-warning/20 to-accent/10",
@@ -37,10 +34,9 @@ const FEATURES = [
   {
     n: "03",
     icon: TrendingUp,
-    title: "The Day Before Protocol",
+    title: "Interruptions. Pivots. Silence. We practice all of it.",
     body: [
-      "The day before the interview is where most prep collapses. Anxious revision, no compounding gain.",
-      "A focused four-stage sequence — consolidation, contradiction clearance, panel briefing, pressure sim — calibrated to your IIM and your interview date.",
+      "Not a polished Q and A. The actual uncomfortable version.",
     ],
     example: "Unlocks 72 hours before your interview. Used by 94% of users in the week leading up to their call.",
     cta: "Set my interview date",
@@ -51,12 +47,11 @@ const FEATURES = [
   {
     n: "04",
     icon: Target,
-    title: "Profile attack map",
+    title: "Real interviews. Not reconstructed from memory. Rebuilt question by question.",
     body: [
-      "Your profile has eight to twelve places where a panel will apply real pressure. You probably know two of them.",
-      "We map all of them — the CGPA dip, the career switch nobody asks about, the hobby you can't actually defend.",
+      "Read what the panel asked, what worked, what didn't, and why.",
     ],
-    example: '"You scored 8.9, then 7.4, then 8.6. Tell us about the 7.4 year." — every IIM panel, every year.',
+    example: '"You scored 8.9, then 7.4, then 8.6. Tell us about the 7.4 year." Every IIM panel, every year.',
     cta: "Build my attack map",
     to: "/grilling",
     accent: "from-destructive/15 to-warning/10",
@@ -65,10 +60,9 @@ const FEATURES = [
   {
     n: "05",
     icon: ShieldAlert,
-    title: "Opinion consistency tracker",
+    title: "IIM A panels think differently to IIM C panels. Prepare accordingly.",
     body: [
-      "Holding a defensible position on twenty topics is hard. Most aspirants drift without realising it.",
-      "Track your stance on every topic you've engaged with, lock the version you'll defend, and run drills that try to break it.",
+      "Signature patterns, domain weights, and what good looks like for each institute.",
     ],
     example: "Topics in red are where your last three answers contradicted each other. Fix those before someone else finds them.",
     cta: "Open consistency tracker",
@@ -96,7 +90,7 @@ export function FeatureRows() {
             The five things <span className="gradient-text">no one else does properly</span>.
           </h2>
           <p className="mt-5 text-base text-muted-foreground">
-            Not features. Things I built because the absence of each one cost me — and most people I know who walked into a panel underprepared without realising it.
+            Not features. Things I built because the absence of each one cost me. And most people I know who walked into a panel underprepared without realising it.
           </p>
         </motion.div>
 
@@ -158,7 +152,7 @@ function Row({ f, flip }: { f: (typeof FEATURES)[number]; flip: boolean }) {
   );
 }
 
-/* — Preview widgets — */
+/*. Preview widgets. */
 function PanelPreview() {
   const iims = [
     { n: "IIM A", style: "First-principles stress", on: true },
@@ -179,7 +173,7 @@ function PanelPreview() {
       </div>
       <div className="mt-4 rounded-xl bg-card/70 p-3 text-xs">
         <div className="text-[10px] font-semibold uppercase tracking-wider text-primary">Signature pattern</div>
-        <div className="mt-1">"Why not X instead of Y?" — IIM A's first move.</div>
+        <div className="mt-1">"Why not X instead of Y?". IIM A's first move.</div>
       </div>
     </div>
   );
@@ -192,7 +186,7 @@ function MemoryPreview() {
       <div className="mt-3 space-y-2">
         <Pos topic="Career motivation" status="Contradiction" tone="destructive" />
         <Pos topic="Repo rate stance" status="Consistent" tone="success" />
-        <Pos topic="India–EU FTA" status="Drifted" tone="warning" />
+        <Pos topic="India-EU FTA" status="Drifted" tone="warning" />
         <Pos topic="Startup vs corporate" status="Locked" tone="primary" />
       </div>
       <div className="mt-4 rounded-xl border border-destructive/30 bg-destructive/5 p-3 text-xs">
@@ -221,13 +215,13 @@ function ProtocolPreview() {
   const stages = [
     { l: "Consolidation brief", t: "20 min", done: true },
     { l: "Contradiction clearance", t: "10 min", done: true },
-    { l: "Panel briefing — IIM A", t: "10 min", done: false, active: true },
+    { l: "Panel briefing. IIM A", t: "10 min", done: false, active: true },
     { l: "Final pressure simulation", t: "15 min", done: false },
   ];
   return (
     <div>
       <div className="flex items-center justify-between">
-        <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">T–18:42:11</div>
+        <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">T-18:42:11</div>
         <div className="text-[10px] font-semibold uppercase tracking-wider text-primary">IIM A · 26 May</div>
       </div>
       <div className="mt-3 space-y-2">
@@ -252,7 +246,7 @@ function AttackPreview() {
     { l: "Career switch motivation gap", lvl: "Critical" },
     { l: "CGPA drop in Y3", lvl: "High" },
     { l: "Hobby depth challenge", lvl: "Medium" },
-    { l: "SOP–profile mismatch", lvl: "High" },
+    { l: "SOP-profile mismatch", lvl: "High" },
   ];
   const tone = (l: string) =>
     l === "Critical" ? "border-destructive text-destructive bg-destructive/5"
@@ -278,10 +272,10 @@ function AttackPreview() {
 
 function ConsistencyPreview() {
   const topics = [
-    { t: "India–China border", v: 82 },
+    { t: "India-China border", v: 82 },
     { t: "AI regulation", v: 47 },
     { t: "Repo rate cut", v: 71 },
-    { t: "Career — startup", v: 28 },
+    { t: "Career. Startup", v: 28 },
   ];
   const color = (v: number) => v >= 70 ? "from-success to-success" : v >= 40 ? "from-warning to-accent" : "from-destructive to-warning";
   return (

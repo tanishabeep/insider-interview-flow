@@ -17,7 +17,7 @@ export const Route = createFileRoute("/evaluator")({
 const SEED_QUESTIONS: { category: string; question: string }[] = [
   { category: "Profile", question: "Walk us through your strongest extracurricular and what it taught you about leadership." },
   { category: "Economics", question: "Should the RBI cut the repo rate this quarter? Defend your stance." },
-  { category: "Geopolitics", question: "What's your view on India's stance on the Russia–Ukraine conflict?" },
+  { category: "Geopolitics", question: "What's your view on India's stance on the Russia-Ukraine conflict?" },
   { category: "Ethics", question: "A close friend cheated in an exam. They scored higher than you. What do you do?" },
   { category: "Stream", question: "Why management after your stream? Be specific, avoid clichés." },
   { category: "Self-awareness", question: "What's the worst feedback you've received this year, and what changed because of it?" },
@@ -123,7 +123,7 @@ function Evaluator() {
             Answer like a real panel. <span className="gradient-text">Get evaluated like one too.</span>
           </h1>
           <p className="mt-3 max-w-2xl text-muted-foreground">
-            Pick a question, write your answer, and get five-dimension feedback plus adaptive follow-ups — exactly how an IIM panel would drill deeper.
+            Pick a question, write your answer, and get five-dimension feedback plus adaptive follow-ups. Exactly how an IIM panel would drill deeper.
           </p>
         </motion.header>
 
@@ -164,7 +164,7 @@ function Evaluator() {
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
             rows={7}
-            placeholder="Speak (well, type) like you're in front of three professors. Don't draft — answer."
+            placeholder="Speak (well, type) like you're in front of three professors. Don't draft. Answer."
             className="mt-5 w-full resize-none rounded-2xl border border-border bg-card/60 p-4 text-sm leading-relaxed outline-none transition-all focus:border-primary/50 focus:bg-card"
           />
           <div className="mt-3 flex items-center justify-between">

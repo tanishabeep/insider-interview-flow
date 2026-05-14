@@ -19,7 +19,7 @@ export function SocialProof() {
           <span className="normal-case tracking-normal text-foreground/85">
             "Caught a contradiction in my own answers I'd been giving for months."
           </span>
-          <span className="ml-2 normal-case text-muted-foreground">— Aarushi K., IIM Indore call</span>
+          <span className="ml-2 normal-case text-muted-foreground">,  Aarushi K., IIM Indore call</span>
         </motion.div>
       </div>
     </section>

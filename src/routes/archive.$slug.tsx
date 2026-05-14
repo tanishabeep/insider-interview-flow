@@ -98,7 +98,7 @@ function ArchiveDetail() {
 
         {/* Panel + themes */}
         <div className="mt-8 grid gap-4 md:grid-cols-2">
-          <InfoCard icon={<Users className="h-4 w-4" />} title="Panel composition" body={item.panel_type ?? "—"} />
+          <InfoCard icon={<Users className="h-4 w-4" />} title="Panel composition" body={item.panel_type ?? ", "} />
           <InfoCard
             icon={<Target className="h-4 w-4" />}
             title="What they were testing"

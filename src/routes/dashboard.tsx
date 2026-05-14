@@ -177,7 +177,7 @@ function Mini({ icon, v, l }: { icon: React.ReactNode; v: string; l: string }) {
 
 function QuickActions() {
   const items = [
-    { to: "/quiz", icon: Newspaper, title: "Quiz Engine",                body: "Pick a category — sprint in 2 min",      tone: "primary" },
+    { to: "/quiz", icon: Newspaper, title: "Quiz Engine",                body: "Pick a category. Sprint in 2 min",      tone: "primary" },
     { to: "/lab",  icon: Brain,     title: "Adaptive Interview Lab",     body: "Live AI panel that doesn't let go",       tone: "accent" },
     { to: "/grilling", icon: UserSearch, title: "Profile Grilling Intel", body: "Map your weak surfaces & traps",        tone: "primary" },
     { to: "/affairs",  icon: Globe2,     title: "Current Affairs Terminal", body: "Domain heatmap, trend, insights",     tone: "accent" },
@@ -213,9 +213,9 @@ function QuickActions() {
 
 function RecentSessions() {
   const rows = [
-    { t: "Profile grilling — Why management at this age?", d: "Yesterday · 8 questions", s: 78 },
-    { t: "Current affairs — India–EU FTA debate", d: "2 days ago · 6 questions", s: 84 },
-    { t: "Stress drill — Defend your weakest score", d: "3 days ago · 5 questions", s: 62 },
+    { t: "Profile grilling. Why management at this age?", d: "Yesterday · 8 questions", s: 78 },
+    { t: "Current affairs. India-EU FTA debate", d: "2 days ago · 6 questions", s: 84 },
+    { t: "Stress drill. Defend your weakest score", d: "3 days ago · 5 questions", s: 62 },
   ];
   return (
     <motion.div
@@ -359,7 +359,7 @@ function ProfileGrillingTeaser() {
       <div className="relative">
         <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Profile grilling</div>
         <h3 className="mt-1 font-display text-lg font-semibold">Predict my weak surfaces</h3>
-        <p className="mt-2 text-xs text-muted-foreground">Add your stream, hobbies and SOP — we map the panel's likely focus areas.</p>
+        <p className="mt-2 text-xs text-muted-foreground">Add your stream, hobbies and SOP. We map the panel's likely focus areas.</p>
         <Link to="/grilling" className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-xs font-semibold text-background transition-transform hover:scale-[1.03]">
           Build my profile <ArrowRight className="h-3 w-3" />
         </Link>
@@ -466,7 +466,7 @@ function EvaluatorInsights() {
 
       {rows && rows.length === 0 && (
         <div className="relative mt-6 rounded-2xl border border-dashed border-border p-6 text-center">
-          <p className="text-sm text-muted-foreground">No evaluator runs yet. Drop your first answer in the AI evaluator and it will appear here — strengths, weaknesses, and your trend over time.</p>
+          <p className="text-sm text-muted-foreground">No evaluator runs yet. Drop your first answer in the AI evaluator and it will appear here. Strengths, weaknesses, and your trend over time.</p>
           <Link to="/evaluator" className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-primary to-primary-glow px-4 py-2 text-xs font-semibold text-primary-foreground transition-transform hover:scale-[1.03]">
             Try the evaluator <ArrowRight className="h-3 w-3" />
           </Link>

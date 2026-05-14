@@ -46,7 +46,7 @@ export function CurrentAffairs() {
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Today's sprint</div>
-                <div className="font-display text-2xl font-semibold">Geopolitics · India–EU FTA</div>
+                <div className="font-display text-2xl font-semibold">Geopolitics · India-EU FTA</div>
               </div>
               <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">2 min</span>
             </div>
@@ -96,7 +96,7 @@ export function CurrentAffairs() {
 
           <div className="grid gap-4">
             <Insight icon={<BarChart3 className="h-4 w-4" />} title="Trend analytics" body="Track which domains move your readiness needle the most." color="primary" />
-            <Insight icon={<Brain className="h-4 w-4" />} title="Opinion drills" body="Practice defending both sides — the panel will probe both." color="accent" />
+            <Insight icon={<Brain className="h-4 w-4" />} title="Opinion drills" body="Practice defending both sides. The panel will probe both." color="accent" />
             <div className="grid grid-cols-2 gap-4">
               <Mini icon={<Globe2 className="h-4 w-4" />} stat="86%" label="Geopolitics accuracy" />
               <Mini icon={<Repeat className="h-4 w-4" />} stat="14d" label="Consistency streak" />

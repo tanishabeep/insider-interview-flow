@@ -23,12 +23,12 @@ export const Route = createFileRoute("/api/grilling")({
         try { body = (await request.json()) as Body; }
         catch { return new Response("Invalid JSON", { status: 400 }); }
 
-        const profile = `Stream: ${body.stream || "—"}
-Hobbies: ${body.hobbies || "—"}
-Achievements: ${body.achievements || "—"}
-Internships: ${body.internships || "—"}
-Background: ${body.background || "—"}
-SOP/Interests: ${body.sop || "—"}`;
+        const profile = `Stream: ${body.stream || ", "}
+Hobbies: ${body.hobbies || ", "}
+Achievements: ${body.achievements || ", "}
+Internships: ${body.internships || ", "}
+Background: ${body.background || ", "}
+SOP/Interests: ${body.sop || ", "}`;
 
         const system = `You are a senior IIM admissions panelist preparing a grilling brief on a candidate.
 Return ONLY valid JSON with this schema:

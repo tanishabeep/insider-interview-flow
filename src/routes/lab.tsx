@@ -11,10 +11,10 @@ export const Route = createFileRoute("/lab")({
 });
 
 const SCENARIOS = [
-  { id: "stream", label: "Why management?", opener: "You're a strong stream candidate. Why pivot to management — and why now? Be specific. Avoid clichés." },
-  { id: "weak", label: "Defend your weakest score", opener: "Your weakest score is staring at us. Walk us through what happened — and what changed because of it." },
+  { id: "stream", label: "Why management?", opener: "You're a strong stream candidate. Why pivot to management. And why now? Be specific. Avoid clichés." },
+  { id: "weak", label: "Defend your weakest score", opener: "Your weakest score is staring at us. Walk us through what happened. And what changed because of it." },
   { id: "policy", label: "Policy stance", opener: "Should India's RBI cut the repo rate this quarter? Take a side and defend it for one minute." },
-  { id: "ethics", label: "Ethical dilemma", opener: "Your team-lead at an internship asks you to slightly inflate a metric in a deck for a partner. What do you do — and why?" },
+  { id: "ethics", label: "Ethical dilemma", opener: "Your team-lead at an internship asks you to slightly inflate a metric in a deck for a partner. What do you do. And why?" },
   { id: "global", label: "Geopolitics", opener: "Pick one foreign-policy decision India made in the last year and tell us if you'd reverse it." },
 ];
 
@@ -83,7 +83,7 @@ function LabPage() {
             <Brain className="h-3 w-3" /> Adaptive Interview Lab
           </span>
           <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight md:text-5xl">A live AI panel that doesn't let go.</h1>
-          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">Pick a scenario. Answer. Get evaluated and grilled with a real follow-up — chain after chain.</p>
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">Pick a scenario. Answer. Get evaluated and grilled with a real follow-up. Chain after chain.</p>
         </motion.header>
 
         <div className="mt-6 flex flex-wrap gap-2">
@@ -117,7 +117,7 @@ function LabPage() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               rows={3}
-              placeholder="Answer the panel out loud (well, type it) — don't draft."
+              placeholder="Answer the panel out loud (well, type it). Don't draft."
               className="flex-1 resize-none rounded-2xl border border-border bg-card/60 p-3 text-sm leading-relaxed outline-none transition-all focus:border-primary/50 focus:bg-card"
             />
             <button

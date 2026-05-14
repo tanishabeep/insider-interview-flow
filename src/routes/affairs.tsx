@@ -10,7 +10,7 @@ export const Route = createFileRoute("/affairs")({
 });
 
 const DOMAINS = [
-  { key: "Geopolitics",     base: 86, weak: ["Quad cohesion", "India–EU FTA"] },
+  { key: "Geopolitics",     base: 86, weak: ["Quad cohesion", "India-EU FTA"] },
   { key: "Economic policy", base: 48, weak: ["RBI repo cycle", "GST collections"] },
   { key: "Indian politics", base: 71, weak: ["UCC framing", "Federal tensions"] },
   { key: "Global trends",   base: 64, weak: ["AI compute regimes", "Climate finance"] },

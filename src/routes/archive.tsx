@@ -60,7 +60,7 @@ function ArchivePage() {
             Insider reconstructions of <span className="gradient-text">actual IIM interviews</span>.
           </h1>
           <p className="mt-3 max-w-2xl text-muted-foreground">
-            Each case is a full panel walkthrough — flow, stress moments, best & weak answers, and what they were really testing.
+            Each case is a full panel walkthrough. Flow, stress moments, best & weak answers, and what they were really testing.
           </p>
         </motion.div>
 
@@ -104,7 +104,7 @@ function ArchiveCard({ item, index }: { item: ArchiveItem; index: number }) {
           {item.difficulty ?? "Case"}
         </span>
         <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-          <Clock className="h-3 w-3" /> {item.duration_minutes ?? "—"} min
+          <Clock className="h-3 w-3" /> {item.duration_minutes ?? ", "} min
         </span>
       </div>
       <h3 className="mt-4 font-display text-xl font-semibold leading-snug">{item.title}</h3>
