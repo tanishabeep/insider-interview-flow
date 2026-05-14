@@ -159,7 +159,7 @@ function ArchiveDetail() {
         </Section>
 
         {/* Stress moments */}
-        <Section title="Pressure moments" icon={<AlertTriangle className="h-4 w-4 text-amber-500" />}>
+        <Section title="Pressure moments" icon={<AlertTriangle className="h-4 w-4" style={{ color: "#DDF344" }} />}>
           <div className="grid gap-3 md:grid-cols-2">
             {(item.stress_moments ?? []).map((m, i) => (
               <motion.div
@@ -168,10 +168,11 @@ function ArchiveDetail() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="glass-card rounded-2xl border-l-4 border-amber-400/60 p-5"
+                className="glass-card rounded-2xl border-l-[3px] p-5"
+                style={{ borderLeftColor: "#DDF344", background: "#DDF34408" }}
               >
                 <div className="flex items-center gap-2 text-sm font-semibold">
-                  <Flame className="h-4 w-4 text-amber-500" /> {m.moment}
+                  <Flame className="h-4 w-4" style={{ color: "#DDF344" }} /> {m.moment}
                 </div>
                 <p className="mt-2 text-sm text-muted-foreground">{m.detail}</p>
               </motion.div>
@@ -191,7 +192,7 @@ function ArchiveDetail() {
             <AnswerColumn
               tone="weak"
               title="Weak answers"
-              icon={<XCircle className="h-4 w-4 text-rose-500" />}
+              icon={<XCircle className="h-4 w-4 text-destructive" />}
               items={item.weak_answers ?? []}
             />
           </div>
@@ -262,9 +263,9 @@ function InfoCard({ icon, title, body }: { icon: React.ReactNode; title: string;
 function AnswerColumn({
   tone, title, icon, items,
 }: { tone: "best" | "weak"; title: string; icon: React.ReactNode; items: QA[] }) {
-  const border = tone === "best" ? "border-emerald-400/40" : "border-rose-400/40";
+  const borderColor = tone === "best" ? "var(--success)" : "var(--destructive)";
   return (
-    <div className={`glass-card rounded-2xl border-l-4 ${border} p-5`}>
+    <div className="glass-card rounded-2xl border-l-4 p-5" style={{ borderLeftColor: borderColor }}>
       <div className="flex items-center gap-2 text-sm font-semibold">{icon} {title}</div>
       <div className="mt-4 space-y-4">
         {items.map((qa, i) => (
