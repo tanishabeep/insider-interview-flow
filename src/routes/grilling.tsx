@@ -28,6 +28,12 @@ function GrillingPage() {
   const [busy, setBusy] = useState(false);
   const [brief, setBrief] = useState<Brief | null>(null);
 
+  const completeness = (() => {
+    const fields = Object.values(form);
+    const filled = fields.filter((v) => v.trim().length > 0).length;
+    return Math.round((filled / fields.length) * 100);
+  })();
+
   async function generate() {
     if (!form.stream.trim() && !form.sop.trim()) {
       toast.error("Add at least your stream and a line on your interests.");
@@ -54,11 +60,27 @@ function GrillingPage() {
         </Link>
 
         <motion.header initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mt-6">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
-            <UserSearch className="h-3 w-3" /> Profile Grilling Intelligence
-          </span>
-          <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight md:text-5xl">Where will the panel cut you?</h1>
-          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">Feed in your profile. We map every weak surface, contradiction trap, and follow-up chain a real panel would pursue.</p>
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
+                <UserSearch className="h-3 w-3" /> Profile Grilling Intelligence
+              </span>
+              <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight md:text-5xl">Where will the panel cut you?</h1>
+              <p className="mt-2 max-w-2xl text-sm text-muted-foreground">Feed in your profile. We map every weak surface, contradiction trap, and follow-up chain a real panel would pursue.</p>
+            </div>
+            <div className="min-w-[200px]">
+              <div className="mb-1 flex items-center justify-between text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                <span>Profile completeness</span>
+                <span className="text-foreground">{completeness}%</span>
+              </div>
+              <div className={`h-2 w-full overflow-hidden rounded-full bg-muted ${completeness < 60 ? "animate-pulse-glow" : ""}`}>
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-[width] duration-500"
+                  style={{ width: `${completeness}%` }}
+                />
+              </div>
+            </div>
+          </div>
         </motion.header>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_1.4fr]">

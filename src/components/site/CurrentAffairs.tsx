@@ -22,8 +22,7 @@ export function CurrentAffairs() {
             Two minutes a day. <span className="accent-text">Compounding edge.</span>
           </h2>
           <p className="mt-5 text-base text-muted-foreground">
-            Most aspirants struggle with consistency, retention, and forming opinions worth defending.
-            We rebuild that muscle through micro-sprints, opinion drills, and adaptive cross-questioning.
+            <span className="font-semibold text-foreground">Two minutes. Every day.</span> Opinions you can actually defend when pressed.
           </p>
           <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-border bg-card/70 px-4 py-1.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-success" />

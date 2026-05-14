@@ -24,7 +24,7 @@ const ITEMS: Item[] = [
   { to: "/quiz", label: "Quiz Arena", icon: Newspaper },
   { to: "/lab", label: "Interview Lab", icon: Brain },
   { to: "/grilling", label: "Profile Intelligence", icon: UserSearch },
-  { to: "/dashboard", label: "New Features Hub", icon: HubIcon, soon: true },
+  { to: "/hub", label: "New Features Hub", icon: HubIcon },
 ];
 
 function useStored(key: string, initial: boolean) {

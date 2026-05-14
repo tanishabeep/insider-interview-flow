@@ -25,14 +25,14 @@ export function Hero() {
               Built from inside the panel room
             </div>
             <h1 className="mt-6 font-display text-[2.6rem] font-semibold leading-[1.05] tracking-tight md:text-[3.4rem] lg:text-[3.8rem]">
-              I got into IIM Indore.
+              <span className="gradient-text">I got into IIM at 18.</span>
               <br />
               <span className="gradient-text">I know exactly how that panel thinks.</span>
               <br />
-              I built this so you do too.
+              <span className="font-normal text-foreground/80">I built this so you do too.</span>
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground md:text-[17px]">
-              Most people walk in with practiced answers. The panel wants to see how you think, not what you've memorised. That gap is what this is built for.
+              The panel watches how you think, not what you've memorised. That gap is what this is built for.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">

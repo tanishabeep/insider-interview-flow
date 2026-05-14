@@ -1,11 +1,12 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Brain, Send, Loader2, Sparkles, MessageSquare, Bot, User as UserIcon } from "lucide-react";
+import { ArrowLeft, Brain, Send, Loader2, Sparkles, MessageSquare, Bot, User as UserIcon, History, Flame } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
 import { sfx } from "@/lib/sounds";
 import { DashShell } from "@/components/dash/Sidebar";
+import { SlidePanel } from "@/components/dash/SlidePanel";
 
 export const Route = createFileRoute("/lab")({
   component: LabPage,
@@ -33,6 +34,8 @@ function LabPage() {
   const [turns, setTurns] = useState<Turn[]>([{ role: "panel", text: SCENARIOS[0].opener }]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+  const [mode, setMode] = useState<"standard" | "stress">("standard");
+  const [historyOpen, setHistoryOpen] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -87,6 +90,33 @@ function LabPage() {
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">Pick a scenario. Answer. Get evaluated and grilled with a real follow-up. Chain after chain.</p>
         </motion.header>
 
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+          <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card p-1">
+            {(["standard", "stress"] as const).map((m) => (
+              <button
+                key={m}
+                onClick={() => { setMode(m); sfx.click(); }}
+                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider transition-all ${
+                  mode === m
+                    ? m === "stress"
+                      ? "bg-destructive/10 text-destructive"
+                      : "bg-foreground text-background"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {m === "stress" && <Flame className="h-3 w-3" />}
+                {m}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={() => { setHistoryOpen(true); sfx.click(); }}
+            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-semibold transition-colors hover:bg-muted"
+          >
+            <History className="h-3.5 w-3.5" /> Session History
+          </button>
+        </div>
+
         <div className="mt-6 flex flex-wrap gap-2">
           {SCENARIOS.map((s) => (
             <button
@@ -131,6 +161,20 @@ function LabPage() {
           </div>
         </div>
       </div>
+      <SlidePanel open={historyOpen} onClose={() => setHistoryOpen(false)} title="Session history">
+        <div className="space-y-3">
+          <p className="text-xs text-muted-foreground">Session data syncing…</p>
+          {[1,2,3,4,5,6,7,8].map((i) => (
+            <div key={i} className="rounded-2xl border border-border bg-card/60 p-4">
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-semibold">Session {i}</div>
+                <div className="text-[11px] text-muted-foreground">—</div>
+              </div>
+              <div className="mt-1 text-[11px] text-muted-foreground">Awaiting sync</div>
+            </div>
+          ))}
+        </div>
+      </SlidePanel>
     </div></DashShell>
   );
 }
