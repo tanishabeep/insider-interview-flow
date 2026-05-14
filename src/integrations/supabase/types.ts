@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      attack_map_profiles: {
+        Row: {
+          created_at: string
+          generated_at: string
+          hot_zones: Json
+          id: string
+          predicted_lines: Json
+          profile_snapshot: Json
+          updated_at: string
+          user_id: string
+          weak_spots: Json
+        }
+        Insert: {
+          created_at?: string
+          generated_at?: string
+          hot_zones?: Json
+          id?: string
+          predicted_lines?: Json
+          profile_snapshot?: Json
+          updated_at?: string
+          user_id: string
+          weak_spots?: Json
+        }
+        Update: {
+          created_at?: string
+          generated_at?: string
+          hot_zones?: Json
+          id?: string
+          predicted_lines?: Json
+          profile_snapshot?: Json
+          updated_at?: string
+          user_id?: string
+          weak_spots?: Json
+        }
+        Relationships: []
+      }
       current_affairs_domain_stats: {
         Row: {
           accuracy: number
@@ -50,6 +86,39 @@ export type Database = {
           updated_at?: string
           user_id?: string
           weak_areas?: string[] | null
+        }
+        Relationships: []
+      }
+      interview_dates: {
+        Row: {
+          created_at: string
+          id: string
+          institute: string
+          interview_date: string
+          panel_notes: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          institute: string
+          interview_date: string
+          panel_notes?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          institute?: string
+          interview_date?: string
+          panel_notes?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -107,6 +176,87 @@ export type Database = {
           strengths?: string[] | null
           user_id?: string
           weaknesses?: string[] | null
+        }
+        Relationships: []
+      }
+      opinion_logs: {
+        Row: {
+          created_at: string
+          id: string
+          position: string
+          sentiment: string | null
+          source_attempt_id: string | null
+          source_response_id: string | null
+          stated_at: string
+          summary: string | null
+          topic: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          position: string
+          sentiment?: string | null
+          source_attempt_id?: string | null
+          source_response_id?: string | null
+          stated_at?: string
+          summary?: string | null
+          topic: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          position?: string
+          sentiment?: string | null
+          source_attempt_id?: string | null
+          source_response_id?: string | null
+          stated_at?: string
+          summary?: string | null
+          topic?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      position_library: {
+        Row: {
+          confidence: number
+          created_at: string
+          evidence: Json
+          id: string
+          reasoning: string | null
+          source: string | null
+          stance: string
+          tags: string[] | null
+          topic: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          confidence?: number
+          created_at?: string
+          evidence?: Json
+          id?: string
+          reasoning?: string | null
+          source?: string | null
+          stance: string
+          tags?: string[] | null
+          topic: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          confidence?: number
+          created_at?: string
+          evidence?: Json
+          id?: string
+          reasoning?: string | null
+          source?: string | null
+          stance?: string
+          tags?: string[] | null
+          topic?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
