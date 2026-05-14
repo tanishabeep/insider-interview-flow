@@ -13,12 +13,14 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LabRouteImport } from './routes/lab'
+import { Route as HubRouteImport } from './routes/hub'
 import { Route as GrillingRouteImport } from './routes/grilling'
 import { Route as EvaluatorRouteImport } from './routes/evaluator'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ArchiveRouteImport } from './routes/archive'
 import { Route as AffairsRouteImport } from './routes/affairs'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as HubIndexRouteImport } from './routes/hub.index'
 import { Route as ArchiveSlugRouteImport } from './routes/archive.$slug'
 import { Route as ApiGrillingRouteImport } from './routes/api/grilling'
 import { Route as ApiEvaluateRouteImport } from './routes/api/evaluate'
@@ -41,6 +43,11 @@ const LoginRoute = LoginRouteImport.update({
 const LabRoute = LabRouteImport.update({
   id: '/lab',
   path: '/lab',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HubRoute = HubRouteImport.update({
+  id: '/hub',
+  path: '/hub',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GrillingRoute = GrillingRouteImport.update({
@@ -73,6 +80,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HubIndexRoute = HubIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => HubRoute,
+} as any)
 const ArchiveSlugRoute = ArchiveSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -96,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/evaluator': typeof EvaluatorRoute
   '/grilling': typeof GrillingRoute
+  '/hub': typeof HubRouteWithChildren
   '/lab': typeof LabRoute
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
@@ -103,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/api/evaluate': typeof ApiEvaluateRoute
   '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
+  '/hub/': typeof HubIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -118,6 +132,7 @@ export interface FileRoutesByTo {
   '/api/evaluate': typeof ApiEvaluateRoute
   '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
+  '/hub': typeof HubIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -127,6 +142,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/evaluator': typeof EvaluatorRoute
   '/grilling': typeof GrillingRoute
+  '/hub': typeof HubRouteWithChildren
   '/lab': typeof LabRoute
   '/login': typeof LoginRoute
   '/quiz': typeof QuizRoute
@@ -134,6 +150,7 @@ export interface FileRoutesById {
   '/api/evaluate': typeof ApiEvaluateRoute
   '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
+  '/hub/': typeof HubIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -144,6 +161,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/evaluator'
     | '/grilling'
+    | '/hub'
     | '/lab'
     | '/login'
     | '/quiz'
@@ -151,6 +169,7 @@ export interface FileRouteTypes {
     | '/api/evaluate'
     | '/api/grilling'
     | '/archive/$slug'
+    | '/hub/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -166,6 +185,7 @@ export interface FileRouteTypes {
     | '/api/evaluate'
     | '/api/grilling'
     | '/archive/$slug'
+    | '/hub'
   id:
     | '__root__'
     | '/'
@@ -174,6 +194,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/evaluator'
     | '/grilling'
+    | '/hub'
     | '/lab'
     | '/login'
     | '/quiz'
@@ -181,6 +202,7 @@ export interface FileRouteTypes {
     | '/api/evaluate'
     | '/api/grilling'
     | '/archive/$slug'
+    | '/hub/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -190,6 +212,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   EvaluatorRoute: typeof EvaluatorRoute
   GrillingRoute: typeof GrillingRoute
+  HubRoute: typeof HubRouteWithChildren
   LabRoute: typeof LabRoute
   LoginRoute: typeof LoginRoute
   QuizRoute: typeof QuizRoute
@@ -226,6 +249,13 @@ declare module '@tanstack/react-router' {
       path: '/lab'
       fullPath: '/lab'
       preLoaderRoute: typeof LabRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hub': {
+      id: '/hub'
+      path: '/hub'
+      fullPath: '/hub'
+      preLoaderRoute: typeof HubRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/grilling': {
@@ -270,6 +300,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hub/': {
+      id: '/hub/'
+      path: '/'
+      fullPath: '/hub/'
+      preLoaderRoute: typeof HubIndexRouteImport
+      parentRoute: typeof HubRoute
+    }
     '/archive/$slug': {
       id: '/archive/$slug'
       path: '/$slug'
@@ -305,6 +342,16 @@ const ArchiveRouteChildren: ArchiveRouteChildren = {
 const ArchiveRouteWithChildren =
   ArchiveRoute._addFileChildren(ArchiveRouteChildren)
 
+interface HubRouteChildren {
+  HubIndexRoute: typeof HubIndexRoute
+}
+
+const HubRouteChildren: HubRouteChildren = {
+  HubIndexRoute: HubIndexRoute,
+}
+
+const HubRouteWithChildren = HubRoute._addFileChildren(HubRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AffairsRoute: AffairsRoute,
@@ -312,6 +359,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   EvaluatorRoute: EvaluatorRoute,
   GrillingRoute: GrillingRoute,
+  HubRoute: HubRouteWithChildren,
   LabRoute: LabRoute,
   LoginRoute: LoginRoute,
   QuizRoute: QuizRoute,
@@ -322,3 +370,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
