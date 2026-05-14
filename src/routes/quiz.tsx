@@ -307,8 +307,8 @@ function TimerRing({ seconds, total, low }: { seconds: number; total: number; lo
   return (
     <div className={`relative grid h-9 w-9 place-items-center rounded-full ${low ? "animate-pulse" : ""}`}>
       <svg viewBox="0 0 36 36" className="absolute inset-0 -rotate-90">
-        <circle cx="18" cy="18" r={r} stroke="oklch(0.92 0.01 270)" strokeWidth="3" fill="none" />
-        <circle cx="18" cy="18" r={r} stroke={low ? "oklch(0.6 0.22 25)" : "oklch(0.55 0.22 270)"} strokeWidth="3" fill="none" strokeLinecap="round" strokeDasharray={c} strokeDashoffset={offset} />
+        <circle cx="18" cy="18" r={r} stroke="#ABC4FF80" strokeWidth="3" fill="none" />
+        <circle cx="18" cy="18" r={r} stroke={low ? "oklch(0.6 0.22 25)" : "#4849F8"} strokeWidth="3" fill="none" strokeLinecap="round" strokeDasharray={c} strokeDashoffset={offset} />
       </svg>
       <span className={`relative text-[10px] font-semibold tabular-nums ${low ? "text-destructive" : ""}`}>{seconds}</span>
     </div>
