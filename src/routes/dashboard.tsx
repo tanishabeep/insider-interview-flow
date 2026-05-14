@@ -3,13 +3,17 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Sparkles, LogOut, Brain, Newspaper, Library, UserSearch,
-  Flame, TrendingUp, TrendingDown, Activity, Target, ArrowRight, BarChart3, Globe2,
-  Zap, ShieldAlert,
+  TrendingUp, TrendingDown, Activity, Target, ArrowRight, BarChart3, Globe2,
+  Zap,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { DashShell } from "@/components/dash/Sidebar";
 import { RecommendedPath } from "@/components/dash/RecommendedPath";
+import {
+  IllQuiz, IllInterview, IllProfile, IllGlobe, IllBooks, IllAnalytics,
+  IllFlame, IllShield,
+} from "@/components/illustrations";
 
 export const Route = createFileRoute("/dashboard")({
   component: Dashboard,
@@ -37,19 +41,19 @@ function Dashboard() {
     <DashShell>
       <DashHeader name={firstName} onSignOut={() => signOut().then(() => nav({ to: "/" }))} />
 
-      <div className="mx-auto max-w-7xl px-6 pb-20 pt-8">
+      <div className="mx-auto max-w-7xl px-6 md:px-12 xl:px-16 pb-24 pt-8">
         <Greeting name={firstName} />
-        <div className="mt-6">
+        <div className="mt-12">
           <RecommendedPath />
         </div>
-        <div className="mt-8 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
-          <div className="space-y-6">
+        <div className="mt-10 grid gap-10 lg:grid-cols-[1.5fr_1fr]">
+          <div className="space-y-8">
             <ReadinessHero />
             <EvaluatorInsights />
             <QuickActions />
             <RecentSessions />
           </div>
-          <div className="space-y-6">
+          <div className="space-y-8">
             <CurrentAffairsPanel />
             <StreakCard />
             <ProfileGrillingTeaser />
@@ -98,7 +102,7 @@ function Greeting({ name }: { name: string }) {
     >
       <div>
         <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{greet}</div>
-        <h1 className="mt-1 font-display text-3xl font-semibold md:text-4xl">{name}, ready for two minutes?</h1>
+        <h1 className="mt-3 font-display text-[2rem] font-semibold leading-tight md:text-[2.8rem]">{name}, ready for two minutes?</h1>
       </div>
       <Link
         to="/quiz"
@@ -118,21 +122,23 @@ function ReadinessHero() {
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.05, duration: 0.6 }}
-      className="glass-panel relative overflow-hidden rounded-3xl p-7"
+      className="glass-panel relative min-h-[320px] overflow-hidden rounded-3xl p-7 md:p-9"
     >
       <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-gradient-to-br from-primary/15 to-accent/20 blur-3xl" aria-hidden />
-      <div className="relative grid gap-6 md:grid-cols-[auto_1fr]">
+      <div className="relative grid gap-8 md:grid-cols-[auto_1fr]">
         <div className="flex items-center gap-5">
           <RadialMeter value={score} />
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Interview readiness</div>
-            <div className="mt-1 font-display text-3xl font-semibold">{score}<span className="text-base text-muted-foreground"> / 100</span></div>
-            <div className="mt-1 inline-flex items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-[11px] font-semibold text-success">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <IllAnalytics size={22} /> Interview readiness
+            </div>
+            <div className="mt-3 font-display text-3xl font-semibold">{score}<span className="text-base text-muted-foreground"> / 100</span></div>
+            <div className="mt-3 inline-flex items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-[11px] font-semibold text-success">
               <TrendingUp className="h-3 w-3" /> +6 this week
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
           <Mini icon={<Activity className="h-3.5 w-3.5" />} v="82" l="Clarity" />
           <Mini icon={<Brain className="h-3.5 w-3.5" />} v="74" l="Structure" />
           <Mini icon={<Target className="h-3.5 w-3.5" />} v="68" l="Confidence" />
@@ -172,46 +178,63 @@ function RadialMeter({ value }: { value: number }) {
 
 function Mini({ icon, v, l }: { icon: React.ReactNode; v: string; l: string }) {
   return (
-    <motion.div whileHover={{ y: -3 }} className="rounded-2xl border border-border bg-card/70 p-3">
+    <motion.div whileHover={{ y: -3 }} className="rounded-2xl border border-border bg-card/70 p-4">
       <div className="text-muted-foreground">{icon}</div>
-      <div className="mt-1 font-display text-lg font-semibold">{v}</div>
-      <div className="text-[10px] uppercase tracking-wide text-muted-foreground">{l}</div>
+      <div className="mt-2 font-display text-lg font-semibold">{v}</div>
+      <div className="mt-0.5 text-[10px] uppercase tracking-wide text-muted-foreground">{l}</div>
     </motion.div>
   );
 }
 
 function QuickActions() {
   const items = [
-    { to: "/quiz", icon: Newspaper, title: "Quiz Engine",                body: "Pick a category. Sprint in 2 min",      tone: "primary" },
-    { to: "/lab",  icon: Brain,     title: "Adaptive Interview Lab",     body: "Live AI panel that doesn't let go",       tone: "accent" },
-    { to: "/grilling", icon: UserSearch, title: "Profile Grilling Intel", body: "Map your weak surfaces & traps",        tone: "primary" },
-    { to: "/affairs",  icon: Globe2,     title: "Current Affairs Terminal", body: "Domain heatmap, trend, insights",     tone: "accent" },
-    { to: "/evaluator", icon: BarChart3, title: "AI Evaluation Studio",   body: "5-dimension answer scoring",            tone: "primary" },
-    { to: "/archive",   icon: Library,   title: "Real Interview Archive", body: "Reconstructed IIM panels",              tone: "accent" },
+    { to: "/quiz", Ill: IllQuiz, title: "Quiz Engine",                body: "Pick a category. Sprint in 2 min",      tone: "primary", hero: true },
+    { to: "/lab",  Ill: IllInterview,     title: "Adaptive Interview Lab",     body: "Live AI panel that doesn't let go",       tone: "accent" },
+    { to: "/grilling", Ill: IllProfile, title: "Profile Grilling Intel", body: "Map your weak surfaces & traps",        tone: "primary" },
+    { to: "/affairs",  Ill: IllGlobe,     title: "Current Affairs Terminal", body: "Domain heatmap, trend, insights",     tone: "accent" },
+    { to: "/evaluator", Ill: IllAnalytics, title: "AI Evaluation Studio",   body: "5-dimension answer scoring",            tone: "primary" },
+    { to: "/archive",   Ill: IllBooks,   title: "Real Interview Archive", body: "Reconstructed IIM panels",              tone: "accent" },
   ] as const;
+  const [hero, ...rest] = items;
   return (
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-      {items.map((it, i) => (
-        <motion.div
-          key={it.title}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.08 * i, duration: 0.5 }}
-        >
-          <Link to={it.to} className="glass-card group block rounded-2xl p-5">
-            <div className="flex items-start gap-4">
-              <span className={`grid h-10 w-10 place-items-center rounded-xl ${it.tone === "primary" ? "bg-primary/10 text-primary" : "bg-accent/20 text-accent-foreground"}`}>
-                <it.icon className="h-4.5 w-4.5" />
-              </span>
-              <div className="flex-1">
-                <div className="font-display text-base font-semibold">{it.title}</div>
-                <div className="mt-0.5 text-xs text-muted-foreground">{it.body}</div>
+    <div className="space-y-4">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Link to={hero.to} className="glass-card group block rounded-3xl p-8">
+          <hero.Ill size={48} className="mb-4" />
+          <div className="font-display text-xl font-semibold">{hero.title}</div>
+          <div className="mt-1 text-sm text-muted-foreground">{hero.body}</div>
+          <div className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary">
+            Begin <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+          </div>
+        </Link>
+      </motion.div>
+      <div className="grid gap-2.5 sm:grid-cols-2 xl:grid-cols-3">
+        {rest.map((it, i) => (
+          <motion.div
+            key={it.title}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.06 * i, duration: 0.45 }}
+          >
+            <Link to={it.to} className="glass-card group block rounded-2xl px-5 py-4">
+              <div className="flex items-start gap-4">
+                <span className={`grid h-10 w-10 flex-shrink-0 place-items-center rounded-xl ${it.tone === "primary" ? "bg-primary/10" : "bg-accent/20"}`}>
+                  <it.Ill size={26} />
+                </span>
+                <div className="flex-1">
+                  <div className="font-display text-sm font-semibold">{it.title}</div>
+                  <div className="mt-0.5 text-[11px] text-muted-foreground">{it.body}</div>
+                </div>
+                <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
               </div>
-              <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
-            </div>
-          </Link>
-        </motion.div>
-      ))}
+            </Link>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -227,22 +250,22 @@ function RecentSessions() {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2, duration: 0.5 }}
-      className="glass-panel rounded-3xl p-6"
+      className="glass-panel min-h-[260px] rounded-3xl p-8"
     >
       <div className="flex items-center justify-between">
         <div className="font-display text-lg font-semibold">Recent sessions</div>
         <span className="text-xs text-muted-foreground">Last 7 days</span>
       </div>
-      <div className="mt-4 space-y-2">
+      <div className="mt-5 divide-y divide-border/60">
         {rows.map((r, i) => (
           <motion.div
             key={i}
             whileHover={{ x: 3 }}
-            className="flex items-center justify-between rounded-2xl border border-border bg-card/70 p-4"
+            className="flex items-center justify-between gap-3 px-1 py-4"
           >
             <div>
               <div className="text-sm font-medium">{r.t}</div>
-              <div className="text-[11px] text-muted-foreground">{r.d}</div>
+              <div className="mt-0.5 text-[11px] text-muted-foreground">{r.d}</div>
             </div>
             <div className="flex items-center gap-3">
               <div className="h-1.5 w-24 overflow-hidden rounded-full bg-muted">
@@ -263,16 +286,16 @@ function CurrentAffairsPanel() {
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1, duration: 0.6 }}
-      className="glass-panel rounded-3xl p-6"
+      className="glass-panel min-h-[260px] rounded-3xl p-7 md:p-9"
     >
       <div className="flex items-center justify-between">
         <div>
           <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Current affairs intelligence</div>
           <div className="font-display text-lg font-semibold">Your domain map</div>
         </div>
-        <Newspaper className="h-4 w-4 text-muted-foreground" />
+        <IllGlobe size={28} />
       </div>
-      <div className="mt-5 space-y-3">
+      <div className="mt-6 space-y-[1.1rem]">
         {[
           { l: "Geopolitics", v: 86, c: "from-primary to-primary-glow" },
           { l: "Economic policy", v: 48, c: "from-destructive/70 to-warning" },
@@ -296,7 +319,7 @@ function CurrentAffairsPanel() {
           </div>
         ))}
       </div>
-      <div className="mt-5 rounded-2xl border border-border bg-gradient-to-br from-primary/5 via-transparent to-accent/5 p-4">
+      <div className="mt-6 rounded-2xl border border-border bg-gradient-to-br from-primary/5 via-transparent to-accent/5 px-6 py-5">
         <div className="flex items-start gap-2">
           <Globe2 className="mt-0.5 h-4 w-4 text-primary" />
           <div>
@@ -319,7 +342,7 @@ function StreakCard() {
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.15, duration: 0.6 }}
-      className="glass-panel rounded-3xl p-6"
+      className="glass-panel min-h-[220px] rounded-3xl p-8"
     >
       <div className="flex items-center justify-between">
         <div>
@@ -332,21 +355,25 @@ function StreakCard() {
         <motion.div
           animate={{ scale: [1, 1.06, 1] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-warning/30 to-warning/10 text-warning"
+          className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-warning/30 to-warning/10"
         >
-          <Flame className="h-6 w-6" />
+          <IllFlame size={36} />
         </motion.div>
       </div>
-      <div className="mt-5 flex gap-1.5">
+      <div className="mt-6 flex gap-2">
         {days.map((d, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, scaleY: 0.4 }}
             animate={{ opacity: 1, scaleY: 1 }}
             transition={{ delay: 0.3 + i * 0.04 }}
-            className={`h-8 flex-1 rounded-md ${d ? "bg-gradient-to-b from-primary to-primary-glow" : "bg-muted"}`}
+            className={`h-[2.8rem] flex-1 rounded-md ${d ? "bg-gradient-to-b from-primary to-primary-glow" : "bg-muted"}`}
           />
         ))}
+      </div>
+      <div className="mt-4 flex items-center justify-between text-[11px] text-muted-foreground">
+        <span>Best: <span className="font-semibold text-foreground">18 days</span></span>
+        <span>This month: <span className="font-semibold text-foreground">19/22</span></span>
       </div>
     </motion.div>
   );
@@ -358,14 +385,19 @@ function ProfileGrillingTeaser() {
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2, duration: 0.6 }}
-      className="glass-panel relative overflow-hidden rounded-3xl p-6"
+      className="glass-panel relative overflow-hidden rounded-3xl p-8"
     >
       <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-accent/30 blur-3xl" aria-hidden />
+      <div className="absolute right-5 top-5">
+        <IllShield size={28} />
+      </div>
       <div className="relative">
-        <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Profile grilling</div>
-        <h3 className="mt-1 font-display text-lg font-semibold">Predict my weak surfaces</h3>
-        <p className="mt-2 text-xs text-muted-foreground">Add your stream, hobbies and SOP. We map the panel's likely focus areas.</p>
-        <Link to="/grilling" className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-xs font-semibold text-background transition-transform hover:scale-[1.03]">
+        <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary">
+          Profile grilling
+        </div>
+        <h3 className="mt-4 font-display text-lg font-semibold">Predict my weak surfaces</h3>
+        <p className="mt-5 text-xs text-muted-foreground">Add your stream, hobbies and SOP. We map the panel's likely focus areas.</p>
+        <Link to="/grilling" className="mt-6 flex w-full items-center justify-center gap-1.5 rounded-full bg-foreground px-4 py-3 text-xs font-semibold text-background transition-transform hover:scale-[1.02]">
           Build my profile <ArrowRight className="h-3 w-3" />
         </Link>
       </div>
@@ -450,12 +482,14 @@ function EvaluatorInsights() {
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.08, duration: 0.6 }}
-      className="glass-panel relative overflow-hidden rounded-3xl p-7"
+      className="glass-panel relative min-h-[280px] overflow-hidden rounded-3xl p-7 md:p-9"
     >
       <div className="absolute -left-16 -bottom-16 h-56 w-56 rounded-full bg-gradient-to-tr from-accent/20 to-primary/15 blur-3xl" aria-hidden />
       <div className="relative flex items-start justify-between">
         <div>
-          <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">AI Evaluator intelligence</div>
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            <IllAnalytics size={22} /> AI Evaluator intelligence
+          </div>
           <div className="font-display text-lg font-semibold">Strengths, weaknesses & trend</div>
         </div>
         <Link to="/evaluator" className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-[11px] font-semibold text-muted-foreground transition-colors hover:text-foreground">
@@ -479,11 +513,11 @@ function EvaluatorInsights() {
       )}
 
       {stats && (
-        <div className="relative mt-5 grid gap-5 md:grid-cols-[1fr_auto]">
-          <div className="space-y-3">
+        <div className="relative mt-7 grid gap-7 md:grid-cols-[1fr_auto]">
+          <div className="space-y-4">
             {stats.dimAverages.map((d, i) => (
               <div key={d.key}>
-                <div className="mb-1 flex items-center justify-between text-xs">
+                <div className="mb-[0.35rem] flex items-center justify-between text-xs">
                   <span className="text-muted-foreground">{d.label}</span>
                   <span className="font-semibold">{d.value.toFixed(1)}<span className="text-muted-foreground">/10</span></span>
                 </div>
@@ -503,7 +537,7 @@ function EvaluatorInsights() {
       )}
 
       {stats && (
-        <div className="relative mt-5 grid gap-3 md:grid-cols-2">
+        <div className="relative mt-7 grid gap-3 md:grid-cols-2">
           <InsightChip
             tone="positive"
             icon={<Zap className="h-3.5 w-3.5" />}
@@ -513,7 +547,7 @@ function EvaluatorInsights() {
           />
           <InsightChip
             tone="warning"
-            icon={<ShieldAlert className="h-3.5 w-3.5" />}
+            icon={<IllShield size={14} />}
             title="Areas to drill"
             items={stats.weakest.map(s => `${s.label} · ${s.value.toFixed(1)}`)}
             extras={stats.topWeaknesses}

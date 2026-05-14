@@ -7,6 +7,7 @@ import { useAuth } from "@/lib/auth";
 import { DashShell } from "@/components/dash/Sidebar";
 import { IIM_INTEL, type IimIntel } from "@/lib/iim-panel-intel";
 import { sfx } from "@/lib/sounds";
+import { IllBuilding } from "@/components/illustrations";
 
 export const Route = createFileRoute("/hub/panel-intel")({
   component: PanelIntelPage,
@@ -29,11 +30,16 @@ function PanelIntelPage() {
     <DashShell>
       <div className="mx-auto max-w-7xl px-6 py-10">
         <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
+          <div className="flex items-center gap-5">
+            <div>
             <h1 className="font-display text-4xl font-semibold tracking-tight md:text-5xl">Panel Intelligence</h1>
             <p className="mt-2 font-mono text-xs text-muted-foreground">
               What each IIM panel actually tests. Sourced from reconstructed interviews.
             </p>
+            </div>
+            <div className="hidden md:block animate-float" style={{ animationDuration: "8s" }}>
+              <IllBuilding size={56} />
+            </div>
           </div>
           <button
             onClick={() => toast.message("IIM comparison coming in the next update.")}

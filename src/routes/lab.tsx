@@ -7,6 +7,7 @@ import { useAuth } from "@/lib/auth";
 import { sfx } from "@/lib/sounds";
 import { DashShell } from "@/components/dash/Sidebar";
 import { SlidePanel } from "@/components/dash/SlidePanel";
+import { IllInterview } from "@/components/illustrations";
 
 export const Route = createFileRoute("/lab")({
   component: LabPage,
@@ -86,7 +87,12 @@ function LabPage() {
           <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
             <Brain className="h-3 w-3" /> Adaptive Interview Lab
           </span>
-          <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight md:text-5xl">A live AI panel that doesn't let go.</h1>
+          <div className="mt-3 flex items-center gap-5">
+            <h1 className="font-display text-4xl font-semibold tracking-tight md:text-5xl">A live AI panel that doesn't let go.</h1>
+            <div className="hidden md:block animate-float" style={{ animationDuration: "8s" }}>
+              <IllInterview size={56} />
+            </div>
+          </div>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">Pick a scenario. Answer. Get evaluated and grilled with a real follow-up. Chain after chain.</p>
         </motion.header>
 

@@ -1,25 +1,26 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowRight, Brain, Newspaper, UserSearch } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { IllQuiz, IllInterview, IllProfile } from "@/components/illustrations";
 
 const STEPS = [
   {
     to: "/quiz",
-    icon: Newspaper,
+    Ill: IllQuiz,
     eyebrow: "10 min · Opinion drill",
     title: "Economic policy",
     note: "Your weakest domain. Consistency 34%.",
   },
   {
     to: "/lab",
-    icon: Brain,
+    Ill: IllInterview,
     eyebrow: "12 min · Stress chain",
     title: "Defend your weakest score",
     note: "Build the muscle the panel will test first.",
   },
   {
     to: "/grilling",
-    icon: UserSearch,
+    Ill: IllProfile,
     eyebrow: "5 min · Profile sweep",
     title: "Re-check attack zones",
     note: "Two new contradictions detected this week.",
@@ -32,7 +33,7 @@ export function RecommendedPath() {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.05 }}
-      className="mt-6"
+      className="mb-10"
     >
       <div className="mb-3 flex items-center justify-between">
         <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -40,7 +41,7 @@ export function RecommendedPath() {
         </div>
         <div className="hidden text-[11px] text-muted-foreground sm:block">~27 min · adaptive</div>
       </div>
-      <div className="relative grid gap-3 sm:grid-cols-3">
+      <div className="relative grid gap-6 sm:grid-cols-3">
         <span aria-hidden className="absolute left-0 right-0 top-1/2 hidden -translate-y-1/2 border-t border-dashed border-border-strong/60 sm:block" />
         {STEPS.map((s, i) => (
           <motion.div
@@ -52,11 +53,11 @@ export function RecommendedPath() {
           >
             <Link
               to={s.to}
-              className="group glass-card relative flex h-full flex-col gap-2 overflow-hidden rounded-2xl border-l-[3px] border-l-primary/70 p-4"
+              className="group glass-card relative flex h-full flex-col gap-2 overflow-hidden rounded-2xl border-l-[3px] border-l-primary/70 px-7 py-6"
             >
               <div className="flex items-center justify-between">
-                <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary/10 text-primary">
-                  <s.icon className="h-4 w-4" />
+                <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary/10">
+                  <s.Ill size={22} />
                 </span>
                 <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
                   step {i + 1}

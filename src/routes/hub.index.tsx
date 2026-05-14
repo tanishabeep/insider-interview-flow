@@ -1,20 +1,21 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, Brain, Calendar, Crosshair, GitCompare, ArrowRight } from "lucide-react";
+import { Sparkles, ArrowRight } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { DashShell } from "@/components/dash/Sidebar";
+import { IllBuilding, IllBrain, IllCalendar, IllTarget, IllConsistency } from "@/components/illustrations";
 
 export const Route = createFileRoute("/hub/")({
   component: HubLanding,
 });
 
 const FEATURES = [
-  { id: "panel-intel", name: "IIM Panel Intelligence", desc: "What each IIM panel actually tests.", icon: Sparkles, status: "active", to: "/hub/panel-intel" },
-  { id: "memory", name: "Memory & Coherence", desc: "Tracks your positions over time. Catches contradictions.", icon: Brain, status: "active", to: "/hub/memory" },
-  { id: "day-before", name: "Day Before Protocol", desc: "Unlocks 72 hours before your interview date.", icon: Calendar, status: "active", to: "/hub/day-before" },
-  { id: "attack-map", name: "Profile Attack Map", desc: "The eight to twelve points a panel will press first.", icon: Crosshair, status: "active", to: "/hub/attack-map" },
-  { id: "consistency", name: "Opinion Consistency Tracker", desc: "Defensible positions topic by topic.", icon: GitCompare, status: "active", to: "/hub/consistency" },
+  { id: "panel-intel", name: "IIM Panel Intelligence", desc: "What each IIM panel actually tests.", Ill: IllBuilding, status: "active", to: "/hub/panel-intel" },
+  { id: "memory", name: "Memory & Coherence", desc: "Tracks your positions over time. Catches contradictions.", Ill: IllBrain, status: "active", to: "/hub/memory" },
+  { id: "day-before", name: "Day Before Protocol", desc: "Unlocks 72 hours before your interview date.", Ill: IllCalendar, status: "active", to: "/hub/day-before" },
+  { id: "attack-map", name: "Profile Attack Map", desc: "The eight to twelve points a panel will press first.", Ill: IllTarget, status: "active", to: "/hub/attack-map" },
+  { id: "consistency", name: "Opinion Consistency Tracker", desc: "Defensible positions topic by topic.", Ill: IllConsistency, status: "active", to: "/hub/consistency" },
 ] as const;
 
 function HubLanding() {
@@ -36,7 +37,7 @@ function HubLanding() {
 
         <div className="mt-10 grid gap-5 md:grid-cols-2">
           {FEATURES.map((f, i) => {
-            const Icon = f.icon;
+            const Ill = f.Ill;
             const active = f.status === "active";
             return (
               <motion.div
@@ -45,12 +46,10 @@ function HubLanding() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 whileHover={active ? { y: -4 } : undefined}
-                className={`glass-card relative overflow-hidden rounded-3xl p-6 ${active ? "" : "opacity-60"}`}
+                className={`glass-card relative overflow-hidden rounded-3xl p-7 ${active ? "" : "opacity-60"}`}
               >
+                <Ill size={48} className="mb-4" />
                 <div className="flex items-start gap-4">
-                  <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-primary/15 to-accent/20 text-primary">
-                    <Icon className="h-5 w-5" />
-                  </span>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <div className="font-display text-lg font-semibold">{f.name}</div>

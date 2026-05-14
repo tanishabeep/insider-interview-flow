@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
 import { sfx } from "@/lib/sounds";
 import { DashShell } from "@/components/dash/Sidebar";
+import { IllProfile } from "@/components/illustrations";
 
 export const Route = createFileRoute("/grilling")({
   component: GrillingPage,
@@ -65,7 +66,12 @@ function GrillingPage() {
               <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
                 <UserSearch className="h-3 w-3" /> Profile Grilling Intelligence
               </span>
-              <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight md:text-5xl">Where will the panel cut you?</h1>
+              <div className="mt-3 flex items-center gap-5">
+                <h1 className="font-display text-4xl font-semibold tracking-tight md:text-5xl">Where will the panel cut you?</h1>
+                <div className="hidden md:block animate-float" style={{ animationDuration: "8s" }}>
+                  <IllProfile size={56} />
+                </div>
+              </div>
               <p className="mt-2 max-w-2xl text-sm text-muted-foreground">Feed in your profile. We map every weak surface, contradiction trap, and follow-up chain a real panel would pursue.</p>
             </div>
             <div className="min-w-[200px]">
