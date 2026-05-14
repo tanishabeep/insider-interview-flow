@@ -24,6 +24,7 @@ import { Route as HubIndexRouteImport } from './routes/hub.index'
 import { Route as HubPanelIntelRouteImport } from './routes/hub.panel-intel'
 import { Route as HubMemoryRouteImport } from './routes/hub.memory'
 import { Route as HubDayBeforeRouteImport } from './routes/hub.day-before'
+import { Route as HubConsistencyRouteImport } from './routes/hub.consistency'
 import { Route as HubAttackMapRouteImport } from './routes/hub.attack-map'
 import { Route as ArchiveSlugRouteImport } from './routes/archive.$slug'
 import { Route as ApiGrillingRouteImport } from './routes/api/grilling'
@@ -104,6 +105,11 @@ const HubDayBeforeRoute = HubDayBeforeRouteImport.update({
   path: '/day-before',
   getParentRoute: () => HubRoute,
 } as any)
+const HubConsistencyRoute = HubConsistencyRouteImport.update({
+  id: '/consistency',
+  path: '/consistency',
+  getParentRoute: () => HubRoute,
+} as any)
 const HubAttackMapRoute = HubAttackMapRouteImport.update({
   id: '/attack-map',
   path: '/attack-map',
@@ -141,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
   '/hub/attack-map': typeof HubAttackMapRoute
+  '/hub/consistency': typeof HubConsistencyRoute
   '/hub/day-before': typeof HubDayBeforeRoute
   '/hub/memory': typeof HubMemoryRoute
   '/hub/panel-intel': typeof HubPanelIntelRoute
@@ -161,6 +168,7 @@ export interface FileRoutesByTo {
   '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
   '/hub/attack-map': typeof HubAttackMapRoute
+  '/hub/consistency': typeof HubConsistencyRoute
   '/hub/day-before': typeof HubDayBeforeRoute
   '/hub/memory': typeof HubMemoryRoute
   '/hub/panel-intel': typeof HubPanelIntelRoute
@@ -183,6 +191,7 @@ export interface FileRoutesById {
   '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
   '/hub/attack-map': typeof HubAttackMapRoute
+  '/hub/consistency': typeof HubConsistencyRoute
   '/hub/day-before': typeof HubDayBeforeRoute
   '/hub/memory': typeof HubMemoryRoute
   '/hub/panel-intel': typeof HubPanelIntelRoute
@@ -206,6 +215,7 @@ export interface FileRouteTypes {
     | '/api/grilling'
     | '/archive/$slug'
     | '/hub/attack-map'
+    | '/hub/consistency'
     | '/hub/day-before'
     | '/hub/memory'
     | '/hub/panel-intel'
@@ -226,6 +236,7 @@ export interface FileRouteTypes {
     | '/api/grilling'
     | '/archive/$slug'
     | '/hub/attack-map'
+    | '/hub/consistency'
     | '/hub/day-before'
     | '/hub/memory'
     | '/hub/panel-intel'
@@ -247,6 +258,7 @@ export interface FileRouteTypes {
     | '/api/grilling'
     | '/archive/$slug'
     | '/hub/attack-map'
+    | '/hub/consistency'
     | '/hub/day-before'
     | '/hub/memory'
     | '/hub/panel-intel'
@@ -376,6 +388,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HubDayBeforeRouteImport
       parentRoute: typeof HubRoute
     }
+    '/hub/consistency': {
+      id: '/hub/consistency'
+      path: '/consistency'
+      fullPath: '/hub/consistency'
+      preLoaderRoute: typeof HubConsistencyRouteImport
+      parentRoute: typeof HubRoute
+    }
     '/hub/attack-map': {
       id: '/hub/attack-map'
       path: '/attack-map'
@@ -420,6 +439,7 @@ const ArchiveRouteWithChildren =
 
 interface HubRouteChildren {
   HubAttackMapRoute: typeof HubAttackMapRoute
+  HubConsistencyRoute: typeof HubConsistencyRoute
   HubDayBeforeRoute: typeof HubDayBeforeRoute
   HubMemoryRoute: typeof HubMemoryRoute
   HubPanelIntelRoute: typeof HubPanelIntelRoute
@@ -428,6 +448,7 @@ interface HubRouteChildren {
 
 const HubRouteChildren: HubRouteChildren = {
   HubAttackMapRoute: HubAttackMapRoute,
+  HubConsistencyRoute: HubConsistencyRoute,
   HubDayBeforeRoute: HubDayBeforeRoute,
   HubMemoryRoute: HubMemoryRoute,
   HubPanelIntelRoute: HubPanelIntelRoute,
@@ -454,3 +475,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
