@@ -46,7 +46,7 @@ Return ONLY valid JSON matching this exact schema:
   "follow_up_questions": string[] (3 adaptive follow-ups a real panel would drill into next)
 }
 
-Tone: a top IIM professor — sharp, direct, never generic. Avoid platitudes like "good attempt".`;
+Tone: a top IIM professor. Sharp, direct, never generic. Avoid platitudes like "good attempt".`;
 
         const user = `QUESTION: ${body.question}
 CATEGORY: ${body.category ?? "general"}

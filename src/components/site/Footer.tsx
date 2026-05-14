@@ -8,7 +8,7 @@ export function Footer() {
           <div>
             <div className="font-display text-base font-semibold">IPM Ace Prep</div>
             <p className="mt-1 max-w-md text-xs text-muted-foreground">
-              An interview intelligence platform for IPMAT &amp; IIM aspirants — built from inside the panel room.
+              An interview intelligence platform for IPMAT &amp; IIM aspirants. Built from inside the panel room.
             </p>
           </div>
           <div className="flex flex-wrap gap-x-7 gap-y-2 text-xs font-medium text-muted-foreground">

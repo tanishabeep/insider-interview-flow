@@ -8,7 +8,7 @@ const STEPS = [
     icon: Newspaper,
     eyebrow: "10 min · Opinion drill",
     title: "Economic policy",
-    note: "Your weakest domain — consistency 34%.",
+    note: "Your weakest domain. Consistency 34%.",
   },
   {
     to: "/lab",

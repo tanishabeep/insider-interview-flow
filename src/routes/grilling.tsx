@@ -148,7 +148,7 @@ function Empty() {
   return (
     <div className="glass-panel grid place-items-center rounded-3xl p-10 text-center">
       <UserSearch className="h-8 w-8 text-muted-foreground/60" />
-      <p className="mt-3 text-sm text-muted-foreground">Fill the profile on the left. We'll generate an intelligence brief — exactly what a panel would aim for.</p>
+      <p className="mt-3 text-sm text-muted-foreground">Fill the profile on the left. We'll generate an intelligence brief. Exactly what a panel would aim for.</p>
     </div>
   );
 }

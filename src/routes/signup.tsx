@@ -29,7 +29,7 @@ function SignupPage() {
     });
     setLoading(false);
     if (error) { toast.error(error.message); return; }
-    toast.success("Account created — check your email to confirm.");
+    toast.success("Account created. Check your email to confirm.");
     nav({ to: "/dashboard" });
   };
 

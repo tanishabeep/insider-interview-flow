@@ -33,7 +33,7 @@ export function Hero() {
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground md:text-[17px]">
               Most people walk in having practiced answers. The panel is testing whether you have a mind worth arguing with.
-              There is a difference — and most coaching mocks miss it entirely.
+              There is a difference. And most coaching mocks miss it entirely.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -108,7 +108,7 @@ function HeroVisual() {
           <FloatingCard delay={0.3}>
             <Header icon={<Brain className="h-3.5 w-3.5" />} label="Profile grilling" tone="primary" />
             <p className="mt-2 font-display text-[15px] font-medium leading-snug">
-              "You said you enjoy economics — name an economist you disagree with."
+              "You said you enjoy economics. Name an economist you disagree with."
             </p>
             <div className="mt-3 flex gap-1.5">
               {[1, 2, 3, 4].map((i) => (

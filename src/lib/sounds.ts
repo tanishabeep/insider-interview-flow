@@ -1,5 +1,5 @@
 /**
- * Premium, subtle sound design — synthesized via Web Audio API.
+ * Premium, subtle sound design. Synthesized via Web Audio API.
  * No external assets, no install. Tones are short, soft, and tasteful.
  * Honors a global mute via localStorage("ipm.sound") = "off".
  */

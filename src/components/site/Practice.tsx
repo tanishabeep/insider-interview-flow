@@ -5,7 +5,7 @@ const features = [
   {
     icon: MessagesSquare,
     title: "Adaptive cross-questioning",
-    body: "The AI drills deeper like a real panel — every answer becomes the next, harder question.",
+    body: "The AI drills deeper like a real panel. Every answer becomes the next, harder question.",
   },
   {
     icon: UserSearch,
@@ -15,7 +15,7 @@ const features = [
   {
     icon: ScanLine,
     title: "Stress interview patterns",
-    body: "Interruptions, contradictions, rapid-fire — train for what actually happens in the room.",
+    body: "Interruptions, contradictions, rapid-fire. Train for what actually happens in the room.",
   },
   {
     icon: Library,
@@ -43,7 +43,7 @@ export function Practice() {
           </h2>
           <p className="mt-5 text-muted-foreground">
             Every interaction adapts. Every answer compounds. The system learns your weak surfaces
-            and rehearses you on them — exactly the way a real IIM panel would.
+            and rehearses you on them. Exactly the way a real IIM panel would.
           </p>
         </motion.div>
 
