@@ -127,7 +127,7 @@ function AttackMapPage() {
       profile_snapshot: profile,
       hot_zones: newZones.filter((z) => z.threat === "high" || z.threat === "critical").map((z) => z.name),
       weak_spots: newZones.map((z) => z.name),
-      predicted_lines: newZones as unknown as Record<string, unknown>[],
+      predicted_lines: JSON.parse(JSON.stringify(newZones)),
     });
     if (error) toast.error(error.message);
     else toast.success("Attack map generated.");
