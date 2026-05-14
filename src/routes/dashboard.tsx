@@ -8,6 +8,8 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
+import { DashShell } from "@/components/dash/Sidebar";
+import { RecommendedPath } from "@/components/dash/RecommendedPath";
 
 export const Route = createFileRoute("/dashboard")({
   component: Dashboard,
@@ -32,11 +34,14 @@ function Dashboard() {
   const firstName = (user.user_metadata?.full_name as string | undefined)?.split(" ")[0] ?? "Aspirant";
 
   return (
-    <div className="min-h-screen bg-surface">
+    <DashShell>
       <DashHeader name={firstName} onSignOut={() => signOut().then(() => nav({ to: "/" }))} />
 
       <div className="mx-auto max-w-7xl px-6 pb-20 pt-8">
         <Greeting name={firstName} />
+        <div className="mt-6">
+          <RecommendedPath />
+        </div>
         <div className="mt-8 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
           <div className="space-y-6">
             <ReadinessHero />
@@ -51,7 +56,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
-    </div>
+    </DashShell>
   );
 }
 
