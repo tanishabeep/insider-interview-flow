@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Check, Sparkles, Timer, Brain, Volume2, VolumeX, Zap } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Sparkles, Timer, Brain, Volume2, VolumeX, Zap, Flame } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { CATEGORY_META, getBank, QUIZ_BANKS, type QuizCategory, type QuizQuestion } from "@/lib/quiz-banks";
@@ -89,6 +89,7 @@ function Sprint({ category, userId }: { category: QuizCategory; userId: string }
   const [seconds, setSeconds] = useState(120);
   const [soundOn, setSoundOnState] = useState(isSoundOn());
   const [introCount, setIntroCount] = useState(3);
+  const [pressure, setPressure] = useState(false);
 
   // Cinematic intro countdown
   useEffect(() => {
@@ -178,12 +179,23 @@ function Sprint({ category, userId }: { category: QuizCategory; userId: string }
   const lowTime = seconds <= 20;
 
   return (
-    <div className="mesh-bg min-h-screen">
+    <div className={`mesh-bg min-h-screen ${pressure ? "pressure-mode" : ""}`}>
       <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-5">
         <Link to="/quiz" search={{}} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Exit sprint
         </Link>
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => { setPressure(!pressure); sfx.click(); }}
+            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider transition-all ${
+              pressure
+                ? "border-destructive/60 bg-destructive/10 text-destructive shadow-[inset_0_0_0_1px_oklch(0.6_0.22_25/0.3)]"
+                : "border-border bg-card text-muted-foreground hover:text-foreground"
+            }`}
+            aria-label="toggle pressure mode"
+          >
+            <Flame className="h-3 w-3" /> Pressure
+          </button>
           <button onClick={toggleSound} className="rounded-full border border-border bg-card p-1.5 text-muted-foreground hover:text-foreground" aria-label="toggle sound">
             {soundOn ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
           </button>
