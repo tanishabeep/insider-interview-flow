@@ -8,13 +8,11 @@ const FEATURES = [
   {
     n: "01",
     icon: Brain,
-    title: "IIM-specific panel intelligence",
+    title: "Every answer you give becomes the next question.",
     body: [
-      "IIM A doesn't ask the same kind of questions as IIM C. Coaching center mocks pretend they do.",
-      "Each panel has its own grilling style. First-principles stress, quant ambushes, ethics traps.",
-      "We mapped every one from reconstructed interviews so you walk in knowing the room.",
+      "The system follows your logic wherever it goes. That's what a real panel does.",
     ],
-    example: '"You said you switched from engineering for impact. Define impact in numbers, please.". IIM A panel, Mar 2024.',
+    example: '"You said you switched from engineering for impact. Define impact in numbers, please." IIM A panel, Mar 2024.',
     cta: "See your panel",
     to: "/dashboard",
     accent: "from-primary/15 to-primary/5",
@@ -23,12 +21,11 @@ const FEATURES = [
   {
     n: "02",
     icon: Layers,
-    title: "Answer memory & contradiction detection",
+    title: "Your SOP has gaps. We find them before the panel does.",
     body: [
-      "Most people give different answers to the same question depending on the framing. The panel notices.",
-      "The system logs every position you take, then flags contradictions across sessions before a panelist does.",
+      "Add your background and we map every angle they're likely to press on.",
     ],
-    example: 'In your SOP: "stability matters most." In your last mock: "I want to start up." Pick one. And defend it.',
+    example: 'In your SOP: "stability matters most." In your last mock: "I want to start up." Pick one and defend it.',
     cta: "Check my coherence",
     to: "/dashboard",
     accent: "from-warning/20 to-accent/10",
@@ -37,10 +34,9 @@ const FEATURES = [
   {
     n: "03",
     icon: TrendingUp,
-    title: "The Day Before Protocol",
+    title: "Interruptions. Pivots. Silence. We practice all of it.",
     body: [
-      "The day before the interview is where most prep collapses. Anxious revision, no compounding gain.",
-      "A focused four-stage sequence. Consolidation, contradiction clearance, panel briefing, pressure sim. Calibrated to your IIM and your interview date.",
+      "Not a polished Q and A. The actual uncomfortable version.",
     ],
     example: "Unlocks 72 hours before your interview. Used by 94% of users in the week leading up to their call.",
     cta: "Set my interview date",
@@ -51,12 +47,11 @@ const FEATURES = [
   {
     n: "04",
     icon: Target,
-    title: "Profile attack map",
+    title: "Real interviews. Not reconstructed from memory. Rebuilt question by question.",
     body: [
-      "Your profile has eight to twelve places where a panel will apply real pressure. You probably know two of them.",
-      "We map all of them. The CGPA dip, the career switch nobody asks about, the hobby you can't actually defend.",
+      "Read what the panel asked, what worked, what didn't, and why.",
     ],
-    example: '"You scored 8.9, then 7.4, then 8.6. Tell us about the 7.4 year.". Every IIM panel, every year.',
+    example: '"You scored 8.9, then 7.4, then 8.6. Tell us about the 7.4 year." Every IIM panel, every year.',
     cta: "Build my attack map",
     to: "/grilling",
     accent: "from-destructive/15 to-warning/10",
@@ -65,10 +60,9 @@ const FEATURES = [
   {
     n: "05",
     icon: ShieldAlert,
-    title: "Opinion consistency tracker",
+    title: "IIM A panels think differently to IIM C panels. Prepare accordingly.",
     body: [
-      "Holding a defensible position on twenty topics is hard. Most aspirants drift without realising it.",
-      "Track your stance on every topic you've engaged with, lock the version you'll defend, and run drills that try to break it.",
+      "Signature patterns, domain weights, and what good looks like for each institute.",
     ],
     example: "Topics in red are where your last three answers contradicted each other. Fix those before someone else finds them.",
     cta: "Open consistency tracker",
