@@ -19,9 +19,8 @@ export function BuiltBy() {
               Built by an <span className="gradient-text">IIM student</span>.
             </h2>
             <p className="mt-5 max-w-md text-base text-muted-foreground">
-              Most prep platforms give you generic question banks. This one was designed
-              from inside the panel room. The patterns, the silences, the cross-questions
-              that actually decide your interview.
+              <span className="font-semibold text-foreground">Built from inside the panel room.</span>
+              <br />Patterns, silences, cross-questions. The things that actually decide it.
             </p>
             <div className="mt-7 grid grid-cols-3 gap-4">
               {[
@@ -47,9 +46,7 @@ export function BuiltBy() {
             <div className="glass-panel relative rounded-3xl p-8">
               <Quote className="absolute -top-4 -left-3 h-10 w-10 rounded-2xl bg-gradient-to-br from-primary to-primary-glow p-2.5 text-primary-foreground shadow-lg" />
               <p className="font-display text-xl leading-relaxed md:text-[1.4rem]">
-                "Walking into a WAT-PI room, I realised most aspirants weren't unprepared , 
-                they were prepared for the wrong things. So I built the prep environment I
-                wished I'd had: adaptive, current-affairs heavy, and ruthless about follow-ups."
+                "Most aspirants aren't unprepared. They're prepared for the wrong interview."
               </p>
               <div className="mt-7 flex items-center gap-4">
                 <div className="grid h-12 w-12 place-items-center rounded-full bg-gradient-to-br from-primary to-primary-glow font-display text-base font-semibold text-primary-foreground">
