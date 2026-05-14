@@ -21,6 +21,7 @@ import { Route as ArchiveRouteImport } from './routes/archive'
 import { Route as AffairsRouteImport } from './routes/affairs'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as HubIndexRouteImport } from './routes/hub.index'
+import { Route as HubPanelIntelRouteImport } from './routes/hub.panel-intel'
 import { Route as ArchiveSlugRouteImport } from './routes/archive.$slug'
 import { Route as ApiGrillingRouteImport } from './routes/api/grilling'
 import { Route as ApiEvaluateRouteImport } from './routes/api/evaluate'
@@ -85,6 +86,11 @@ const HubIndexRoute = HubIndexRouteImport.update({
   path: '/',
   getParentRoute: () => HubRoute,
 } as any)
+const HubPanelIntelRoute = HubPanelIntelRouteImport.update({
+  id: '/panel-intel',
+  path: '/panel-intel',
+  getParentRoute: () => HubRoute,
+} as any)
 const ArchiveSlugRoute = ArchiveSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -116,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/api/evaluate': typeof ApiEvaluateRoute
   '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
+  '/hub/panel-intel': typeof HubPanelIntelRoute
   '/hub/': typeof HubIndexRoute
 }
 export interface FileRoutesByTo {
@@ -132,6 +139,7 @@ export interface FileRoutesByTo {
   '/api/evaluate': typeof ApiEvaluateRoute
   '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
+  '/hub/panel-intel': typeof HubPanelIntelRoute
   '/hub': typeof HubIndexRoute
 }
 export interface FileRoutesById {
@@ -150,6 +158,7 @@ export interface FileRoutesById {
   '/api/evaluate': typeof ApiEvaluateRoute
   '/api/grilling': typeof ApiGrillingRoute
   '/archive/$slug': typeof ArchiveSlugRoute
+  '/hub/panel-intel': typeof HubPanelIntelRoute
   '/hub/': typeof HubIndexRoute
 }
 export interface FileRouteTypes {
@@ -169,6 +178,7 @@ export interface FileRouteTypes {
     | '/api/evaluate'
     | '/api/grilling'
     | '/archive/$slug'
+    | '/hub/panel-intel'
     | '/hub/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -185,6 +195,7 @@ export interface FileRouteTypes {
     | '/api/evaluate'
     | '/api/grilling'
     | '/archive/$slug'
+    | '/hub/panel-intel'
     | '/hub'
   id:
     | '__root__'
@@ -202,6 +213,7 @@ export interface FileRouteTypes {
     | '/api/evaluate'
     | '/api/grilling'
     | '/archive/$slug'
+    | '/hub/panel-intel'
     | '/hub/'
   fileRoutesById: FileRoutesById
 }
@@ -307,6 +319,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HubIndexRouteImport
       parentRoute: typeof HubRoute
     }
+    '/hub/panel-intel': {
+      id: '/hub/panel-intel'
+      path: '/panel-intel'
+      fullPath: '/hub/panel-intel'
+      preLoaderRoute: typeof HubPanelIntelRouteImport
+      parentRoute: typeof HubRoute
+    }
     '/archive/$slug': {
       id: '/archive/$slug'
       path: '/$slug'
@@ -343,10 +362,12 @@ const ArchiveRouteWithChildren =
   ArchiveRoute._addFileChildren(ArchiveRouteChildren)
 
 interface HubRouteChildren {
+  HubPanelIntelRoute: typeof HubPanelIntelRoute
   HubIndexRoute: typeof HubIndexRoute
 }
 
 const HubRouteChildren: HubRouteChildren = {
+  HubPanelIntelRoute: HubPanelIntelRoute,
   HubIndexRoute: HubIndexRoute,
 }
 
