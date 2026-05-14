@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { CATEGORY_META, getBank, QUIZ_BANKS, type QuizCategory, type QuizQuestion } from "@/lib/quiz-banks";
 import { sfx, isSoundOn, setSound } from "@/lib/sounds";
 import { DashShell } from "@/components/dash/Sidebar";
+import { IllQuiz } from "@/components/illustrations";
 
 type Search = { c?: QuizCategory };
 
@@ -40,9 +41,14 @@ function CategoryPicker() {
         <Link to="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Dashboard
         </Link>
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <h1 className="mt-6 font-display text-4xl font-semibold tracking-tight">Pick your battlefield.</h1>
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="mt-6 flex items-center gap-5">
+          <div>
+          <h1 className="font-display text-4xl font-semibold tracking-tight">Pick your battlefield.</h1>
           <p className="mt-2 text-sm text-muted-foreground">Each category has its own curated bank, themes, and follow-up traps.</p>
+          </div>
+          <div className="hidden md:block animate-float" style={{ animationDuration: "8s" }}>
+            <IllQuiz size={56} />
+          </div>
         </motion.div>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {cats.map(([key, meta], i) => (
