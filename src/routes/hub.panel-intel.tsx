@@ -94,7 +94,12 @@ function PanelIntelPage() {
               transition={{ duration: 0.2 }}
               className="space-y-5"
             >
-              <IntelView iim={active} onPractice={() => nav({ to: "/lab" })} />
+              <IntelView
+                iim={active}
+                onPractice={() =>
+                  nav({ to: "/lab", search: { iim: active.id, mode: "panel-intel" } as never })
+                }
+              />
             </motion.div>
           </AnimatePresence>
         </div>
