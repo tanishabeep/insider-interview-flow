@@ -151,15 +151,15 @@ function Sparkline({ points }: { points: number[] }) {
     <svg viewBox={`0 0 ${w} ${h}`} className="mt-4 w-full">
       <defs>
         <linearGradient id="trendg" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="oklch(0.55 0.22 270 / 0.4)" />
-          <stop offset="100%" stopColor="oklch(0.55 0.22 270 / 0)" />
+          <stop offset="0%" stopColor="#ABC4FF" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="#ABC4FF" stopOpacity="0" />
         </linearGradient>
       </defs>
       <motion.path d={`${path} L${w},${h} L0,${h} Z`} fill="url(#trendg)" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} />
-      <motion.path d={path} fill="none" stroke="oklch(0.55 0.22 270)" strokeWidth="2.5" strokeLinecap="round"
+      <motion.path d={path} fill="none" stroke="#4849F8" strokeWidth="2.5" strokeLinecap="round"
         initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }} />
       {xs.map((x, i) => (
-        <circle key={i} cx={x} cy={ys[i]} r="3" fill="oklch(0.55 0.22 270)" />
+        <circle key={i} cx={x} cy={ys[i]} r="3" fill="#4849F8" />
       ))}
     </svg>
   );
