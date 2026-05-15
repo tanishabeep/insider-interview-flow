@@ -2,9 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
-  Sparkles, LogOut, Brain, Newspaper, Library, UserSearch,
-  TrendingUp, TrendingDown, Activity, Target, ArrowRight, BarChart3, Globe2,
-  Zap,
+  Sparkles, LogOut, TrendingUp, TrendingDown, ArrowRight, Zap,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
@@ -115,74 +113,161 @@ function Greeting({ name }: { name: string }) {
   );
 }
 
+type EvalLite = {
+  created_at: string;
+  overall_score: number | null;
+  clarity_score: number | null;
+  logical_consistency_score: number | null;
+  confidence_score: number | null;
+  originality_score: number | null;
+};
+
 function ReadinessHero() {
-  const score = 73;
+  const [rows, setRows] = useState<EvalLite[] | null>(null);
+  useEffect(() => {
+    supabase
+      .from("open_ended_responses")
+      .select("created_at, overall_score, clarity_score, logical_consistency_score, confidence_score, originality_score")
+      .order("created_at", { ascending: false })
+      .limit(200)
+      .then(({ data }) => setRows((data ?? []) as EvalLite[]));
+  }, []);
+
+  const stats = useMemo(() => {
+    if (!rows || rows.length === 0) return null;
+    const avg = (k: keyof EvalLite) => {
+      const v = rows.map(r => Number(r[k] ?? 0)).filter(n => n > 0);
+      return v.length ? (v.reduce((a, b) => a + b, 0) / v.length) : 0;
+    };
+    // scores in DB are 0-10 → convert to 0-100 percent
+    const toPct = (n: number) => Math.round(n * 10);
+    const dims = [
+      { label: "Clarity", value: toPct(avg("clarity_score")) },
+      { label: "Structure", value: toPct(avg("logical_consistency_score")) },
+      { label: "Confidence", value: toPct(avg("confidence_score")) },
+      { label: "Originality", value: toPct(avg("originality_score")) },
+    ];
+    const overall = Math.round((dims.reduce((a, d) => a + d.value, 0) / dims.length));
+    // weekly delta on overall_score
+    const now = Date.now();
+    const week = 7 * 24 * 60 * 60 * 1000;
+    const recent = rows.filter(r => now - new Date(r.created_at).getTime() <= week).map(r => Number(r.overall_score ?? 0)).filter(n => n > 0);
+    const prior = rows.filter(r => {
+      const t = now - new Date(r.created_at).getTime();
+      return t > week && t <= 2 * week;
+    }).map(r => Number(r.overall_score ?? 0)).filter(n => n > 0);
+    let delta: number | null = null;
+    if (rows.length >= 2 && recent.length && prior.length) {
+      const a = recent.reduce((x, y) => x + y, 0) / recent.length;
+      const b = prior.reduce((x, y) => x + y, 0) / prior.length;
+      delta = Math.round((a - b) * 10);
+    }
+    const max = Math.max(...dims.map(d => d.value));
+    return { dims, overall, delta, max };
+  }, [rows]);
+
+  if (rows === null) {
+    return (
+      <div className="min-h-[200px] animate-pulse rounded-[20px] bg-[#4849F8]/10" />
+    );
+  }
+
+  if (!stats) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="grid min-h-[200px] place-items-center rounded-[20px] p-10"
+        style={{ backgroundColor: "#4849F8" }}
+      >
+        <div className="text-center">
+          <div className="font-display text-[4rem] font-semibold leading-none" style={{ color: "#FDFEFF", opacity: 0.3 }}>?</div>
+          <p className="mx-auto mt-3 max-w-[260px] text-[0.9rem]" style={{ color: "#FDFEFF", opacity: 0.7 }}>
+            Your readiness score builds as you practice.
+          </p>
+          <Link
+            to="/quiz"
+            className="mt-6 inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-xs font-semibold"
+            style={{ backgroundColor: "#FDFEFF", color: "#0D0D1A" }}
+          >
+            Start your first session <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+      </motion.div>
+    );
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.05, duration: 0.6 }}
-      className="glass-panel relative min-h-[320px] overflow-hidden rounded-3xl p-7 md:p-9"
+      className="relative flex min-h-[200px] flex-col gap-6 overflow-hidden rounded-[20px] p-10 md:flex-row md:items-center md:gap-0 md:p-10"
+      style={{ backgroundColor: "#4849F8" }}
     >
-      <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-gradient-to-br from-primary/15 to-accent/20 blur-3xl" aria-hidden />
-      <div className="relative grid gap-8 md:grid-cols-[auto_1fr]">
-        <div className="flex items-center gap-5">
-          <RadialMeter value={score} />
-          <div>
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              <IllAnalytics size={22} /> Interview readiness
-            </div>
-            <div className="mt-3 font-display text-3xl font-semibold">{score}<span className="text-base text-muted-foreground"> / 100</span></div>
-            <div className="mt-3 inline-flex items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-[11px] font-semibold text-success">
-              <TrendingUp className="h-3 w-3" /> +6 this week
-            </div>
+      {/* Left zone */}
+      <div className="flex flex-col md:w-[40%] md:pr-10">
+        <div className="flex items-center gap-2">
+          <IllAnalytics size={16} className="opacity-60" />
+          <div className="text-[0.65rem] font-bold uppercase" style={{ color: "#FDFEFF", opacity: 0.6, letterSpacing: "0.12em" }}>
+            Interview readiness
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
-          <Mini icon={<Activity className="h-3.5 w-3.5" />} v="82" l="Clarity" />
-          <Mini icon={<Brain className="h-3.5 w-3.5" />} v="74" l="Structure" />
-          <Mini icon={<Target className="h-3.5 w-3.5" />} v="68" l="Confidence" />
-          <Mini icon={<BarChart3 className="h-3.5 w-3.5" />} v="91" l="Originality" />
+        <div className="mt-2 flex items-baseline gap-2">
+          <span className="font-display text-[5.5rem] font-extrabold leading-none" style={{ color: "#FDFEFF" }}>{stats.overall}</span>
+          <span className="text-[1.1rem] font-normal" style={{ color: "#FDFEFF", opacity: 0.45 }}>/ 100</span>
         </div>
+        {stats.delta !== null && (
+          <div
+            className="mt-3 inline-flex w-fit items-center gap-1 rounded-full text-[0.75rem] font-bold"
+            style={{ backgroundColor: "#DDF344", color: "#0D0D1A", padding: "0.3rem 0.85rem" }}
+          >
+            ▲ {stats.delta >= 0 ? "+" : ""}{stats.delta} this week
+          </div>
+        )}
+      </div>
+      {/* Divider */}
+      <div className="hidden h-[60%] w-px md:block" style={{ backgroundColor: "#FDFEFF", opacity: 0.15 }} />
+      {/* Right zone */}
+      <div className="flex flex-1 items-center justify-evenly md:pl-10">
+        {stats.dims.map((d) => (
+          <ColumnBar key={d.label} label={d.label} value={d.value} highlight={d.value === stats.max && stats.max > 0} />
+        ))}
       </div>
     </motion.div>
   );
 }
 
-function RadialMeter({ value }: { value: number }) {
-  const r = 38;
-  const c = 2 * Math.PI * r;
-  const offset = c - (value / 100) * c;
+function ColumnBar({ label, value, highlight }: { label: string; value: number; highlight: boolean }) {
+  const containerH = 120;
+  const fillColor = highlight ? "#DDF344" : "rgba(253,254,255,0.85)";
   return (
-    <div className="relative h-24 w-24">
-      <svg viewBox="0 0 100 100" className="-rotate-90">
-        <circle cx="50" cy="50" r={r} stroke="oklch(0.92 0.01 270)" strokeWidth="8" fill="none" />
-        <motion.circle
-          cx="50" cy="50" r={r}
-          stroke="url(#g1)" strokeWidth="8" fill="none" strokeLinecap="round"
-          strokeDasharray={c}
-          initial={{ strokeDashoffset: c }}
-          animate={{ strokeDashoffset: offset }}
-          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+    <div className="flex flex-col items-center">
+      <div className="mb-2 font-display text-[1.1rem] font-bold" style={{ color: "#FDFEFF" }}>{value}</div>
+      <div
+        className="relative w-[42px] overflow-hidden rounded-full md:w-[52px]"
+        style={{
+          height: containerH,
+          border: "1.5px solid rgba(253,254,255,0.25)",
+          backgroundColor: "rgba(253,254,255,0.06)",
+        }}
+      >
+        <motion.div
+          initial={{ height: 0 }}
+          animate={{ height: `${Math.max(0, Math.min(100, value))}%` }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute bottom-0 left-0 right-0 rounded-full"
+          style={{ backgroundColor: fillColor }}
         />
-        <defs>
-          <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="oklch(0.45 0.22 270)" />
-            <stop offset="100%" stopColor="oklch(0.62 0.24 285)" />
-          </linearGradient>
-        </defs>
-      </svg>
+      </div>
+      <div
+        className="mt-2 text-[0.6rem] font-bold uppercase"
+        style={{ color: "#FDFEFF", opacity: 0.55, letterSpacing: "0.08em" }}
+      >
+        {label}
+      </div>
     </div>
-  );
-}
-
-function Mini({ icon, v, l }: { icon: React.ReactNode; v: string; l: string }) {
-  return (
-    <motion.div whileHover={{ y: -3 }} className="rounded-2xl border border-border bg-card/70 p-4">
-      <div className="text-muted-foreground">{icon}</div>
-      <div className="mt-2 font-display text-lg font-semibold">{v}</div>
-      <div className="mt-0.5 text-[10px] uppercase tracking-wide text-muted-foreground">{l}</div>
-    </motion.div>
   );
 }
 
@@ -240,11 +325,49 @@ function QuickActions() {
 }
 
 function RecentSessions() {
-  const rows = [
-    { t: "Profile grilling. Why management at this age?", d: "Yesterday · 8 questions", s: 78 },
-    { t: "Current affairs. India-EU FTA debate", d: "2 days ago · 6 questions", s: 84 },
-    { t: "Stress drill. Defend your weakest score", d: "3 days ago · 5 questions", s: 62 },
-  ];
+  const [rows, setRows] = useState<{ t: string; d: string; s: number }[] | null>(null);
+  useEffect(() => {
+    (async () => {
+      const [evals, attempts] = await Promise.all([
+        supabase.from("open_ended_responses").select("created_at, question, overall_score").order("created_at", { ascending: false }).limit(5),
+        supabase.from("quiz_attempts").select("completed_at, category, accuracy").order("completed_at", { ascending: false }).limit(5),
+      ]);
+      const merged = [
+        ...((evals.data ?? []).map(e => ({
+          t: (e.question ?? "Evaluator response").slice(0, 80),
+          d: timeAgo(e.created_at),
+          s: Math.round(Number(e.overall_score ?? 0) * 10),
+          when: new Date(e.created_at).getTime(),
+        }))),
+        ...((attempts.data ?? []).map(a => ({
+          t: `Quiz · ${a.category ?? "Mixed"}`,
+          d: timeAgo(a.completed_at),
+          s: Math.round(Number(a.accuracy ?? 0)),
+          when: new Date(a.completed_at).getTime(),
+        }))),
+      ].sort((a, b) => b.when - a.when).slice(0, 5);
+      setRows(merged);
+    })();
+  }, []);
+
+  if (rows === null) {
+    return <div className="glass-panel min-h-[260px] animate-pulse rounded-3xl" />;
+  }
+
+  if (rows.length === 0) {
+    return (
+      <div className="glass-panel rounded-3xl p-8 text-center">
+        <div className="font-display text-lg font-semibold">Recent sessions</div>
+        <p className="mx-auto mt-3 max-w-sm text-sm text-muted-foreground">
+          No sessions yet. Your first one shows you where the gaps are.
+        </p>
+        <Link to="/lab" className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-xs font-semibold text-background">
+          Start a session <ArrowRight className="h-3 w-3" />
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -280,7 +403,34 @@ function RecentSessions() {
   );
 }
 
+function timeAgo(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime();
+  const d = Math.floor(diff / (24 * 3600 * 1000));
+  if (d <= 0) return "Today";
+  if (d === 1) return "Yesterday";
+  if (d < 7) return `${d} days ago`;
+  return new Date(iso).toLocaleDateString();
+}
+
 function CurrentAffairsPanel() {
+  const [bars, setBars] = useState<{ l: string; v: number; n: number }[] | null>(null);
+  useEffect(() => {
+    supabase.from("quiz_attempts").select("category, accuracy").then(({ data }) => {
+      const cats = ["Geopolitics", "Economic policy", "Indian politics", "Global trends", "Opinion drills"];
+      const grouped = new Map<string, number[]>();
+      (data ?? []).forEach(a => {
+        const k = (a.category ?? "").toString();
+        if (!grouped.has(k)) grouped.set(k, []);
+        grouped.get(k)!.push(Number(a.accuracy ?? 0));
+      });
+      setBars(cats.map(l => {
+        const arr = grouped.get(l) ?? [];
+        const v = arr.length ? Math.round(arr.reduce((x, y) => x + y, 0) / arr.length) : 0;
+        return { l, v, n: arr.length };
+      }));
+    });
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 14 }}
@@ -295,48 +445,62 @@ function CurrentAffairsPanel() {
         </div>
         <IllGlobe size={28} />
       </div>
-      <div className="mt-6 space-y-[1.1rem]">
-        {[
-          { l: "Geopolitics", v: 86, c: "from-primary to-primary-glow" },
-          { l: "Economic policy", v: 48, c: "from-destructive/70 to-warning" },
-          { l: "Indian politics", v: 71, c: "from-chart-3 to-primary" },
-          { l: "Global trends", v: 64, c: "from-accent to-primary-glow" },
-          { l: "Opinion drills", v: 39, c: "from-warning to-destructive/70" },
-        ].map((d, i) => (
-          <div key={d.l}>
-            <div className="mb-1 flex items-center justify-between text-xs">
-              <span className="text-muted-foreground">{d.l}</span>
-              <span className="font-semibold">{d.v}%</span>
-            </div>
-            <div className="h-1.5 overflow-hidden rounded-full bg-muted">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${d.v}%` }}
-                transition={{ delay: 0.3 + i * 0.08, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                className={`h-full rounded-full bg-gradient-to-r ${d.c}`}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="mt-6 rounded-2xl border border-border bg-gradient-to-br from-primary/5 via-transparent to-accent/5 px-6 py-5">
-        <div className="flex items-start gap-2">
-          <Globe2 className="mt-0.5 h-4 w-4 text-primary" />
-          <div>
-            <div className="text-xs font-semibold">Insight</div>
-            <p className="mt-0.5 text-xs text-muted-foreground">
-              You consistently struggle with <span className="font-semibold text-foreground">economic policy discussions</span> and
-              <span className="font-semibold text-foreground"> opinion-based answering</span>. Add 2 opinion drills per day this week.
-            </p>
-          </div>
+      {bars === null && <div className="mt-6 h-32 animate-pulse rounded-2xl bg-muted/60" />}
+      {bars && bars.every(b => b.n === 0) && (
+        <div className="mt-6 rounded-2xl border border-dashed border-border p-6 text-center">
+          <p className="text-sm text-muted-foreground">Complete some quizzes to see your domain map.</p>
+          <Link to="/quiz" className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-xs font-semibold text-background">
+            Go to Quiz Arena <ArrowRight className="h-3 w-3" />
+          </Link>
         </div>
-      </div>
+      )}
+      {bars && bars.some(b => b.n > 0) && (
+        <div className="mt-6 space-y-[1.1rem]">
+          {bars.map((d, i) => (
+            <div key={d.l}>
+              <div className="mb-1 flex items-center justify-between text-xs">
+                <span className="text-muted-foreground">{d.l}</span>
+                {d.n === 0
+                  ? <span className="text-[0.65rem] text-muted-foreground">No attempts yet</span>
+                  : <span className="font-semibold">{d.v}%</span>}
+              </div>
+              <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${d.v}%` }}
+                  transition={{ delay: 0.3 + i * 0.08, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                  className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </motion.div>
   );
 }
 
 function StreakCard() {
-  const days = [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1];
+  const [info, setInfo] = useState<{ days: number[]; active: number } | null>(null);
+  useEffect(() => {
+    (async () => {
+      const [a, b] = await Promise.all([
+        supabase.from("quiz_attempts").select("completed_at").gte("completed_at", new Date(Date.now() - 30 * 86400000).toISOString()),
+        supabase.from("open_ended_responses").select("created_at").gte("created_at", new Date(Date.now() - 30 * 86400000).toISOString()),
+      ]);
+      const set = new Set<string>();
+      (a.data ?? []).forEach(r => set.add(new Date(r.completed_at).toDateString()));
+      (b.data ?? []).forEach(r => set.add(new Date(r.created_at).toDateString()));
+      const days: number[] = [];
+      for (let i = 11; i >= 0; i--) {
+        const d = new Date(Date.now() - i * 86400000).toDateString();
+        days.push(set.has(d) ? 1 : 0);
+      }
+      setInfo({ days, active: set.size });
+    })();
+  }, []);
+  const days = info?.days ?? [0,0,0,0,0,0,0,0,0,0,0,0];
+  const active = info?.active ?? 0;
   return (
     <motion.div
       initial={{ opacity: 0, y: 14 }}
@@ -346,11 +510,12 @@ function StreakCard() {
     >
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Streak</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Active days this month</div>
           <div className="mt-1 flex items-baseline gap-2">
-            <span className="font-display text-3xl font-semibold">12</span>
+            <span className="font-display text-3xl font-semibold">{active}</span>
             <span className="text-xs text-muted-foreground">days</span>
           </div>
+          {active === 0 && <div className="mt-1 text-[11px] text-muted-foreground">Start your streak today.</div>}
         </div>
         <motion.div
           animate={{ scale: [1, 1.06, 1] }}
@@ -371,9 +536,8 @@ function StreakCard() {
           />
         ))}
       </div>
-      <div className="mt-4 flex items-center justify-between text-[11px] text-muted-foreground">
-        <span>Best: <span className="font-semibold text-foreground">18 days</span></span>
-        <span>This month: <span className="font-semibold text-foreground">19/22</span></span>
+      <div className="mt-4 text-[11px] text-muted-foreground">
+        Last 12 days · sessions across quiz and evaluator
       </div>
     </motion.div>
   );
