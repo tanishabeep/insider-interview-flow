@@ -2,9 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
-  Sparkles, LogOut, Brain, Newspaper, Library, UserSearch,
-  TrendingUp, TrendingDown, Activity, Target, ArrowRight, BarChart3, Globe2,
-  Zap,
+  Sparkles, LogOut, TrendingUp, TrendingDown, ArrowRight, Zap,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
