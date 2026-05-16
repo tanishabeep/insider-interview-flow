@@ -1,13 +1,23 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Clock, Layers, Flame, Search } from "lucide-react";
+import { ArrowRight, Clock, Layers, Flame, Search, Lock } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/lib/auth";
+import { PUBLIC_ARCHIVE_SLUG } from "@/lib/public-archive";
 
 export const Route = createFileRoute("/archive")({
   component: ArchivePage,
+  head: () => ({
+    meta: [
+      { title: "Real IIM Interview Reconstructions — IPM Ace Archive" },
+      { name: "description", content: "Browse reconstructed real IIM interviews. Full panel walkthroughs, question chains, pressure moments, best and weak answers." },
+      { property: "og:title", content: "Real IIM Interview Reconstructions — IPM Ace Archive" },
+      { property: "og:description", content: "Browse reconstructed real IIM interviews. Full panel walkthroughs and panel psychology analysis." },
+    ],
+  }),
 });
 
 type ArchiveItem = {
@@ -23,6 +33,7 @@ type ArchiveItem = {
 };
 
 function ArchivePage() {
+  const { user } = useAuth();
   const [items, setItems] = useState<ArchiveItem[]>([]);
   const [q, setQ] = useState("");
   const [loading, setLoading] = useState(true);
@@ -77,7 +88,7 @@ function ArchivePage() {
         <div className="mt-8 grid gap-5 md:grid-cols-2">
           {loading && <div className="text-sm text-muted-foreground">Loading archive…</div>}
           {filtered.map((it, i) => (
-            <ArchiveCard key={it.id} item={it} index={i} />
+            <ArchiveCard key={it.id} item={it} index={i} locked={!user && it.slug !== PUBLIC_ARCHIVE_SLUG} totalCount={items.length} />
           ))}
           {!loading && filtered.length === 0 && (
             <div className="text-sm text-muted-foreground">No interviews match your search.</div>
@@ -89,7 +100,67 @@ function ArchivePage() {
   );
 }
 
-function ArchiveCard({ item, index }: { item: ArchiveItem; index: number }) {
+function ArchiveCard({ item, index, locked, totalCount }: { item: ArchiveItem; index: number; locked: boolean; totalCount: number }) {
+  const inner = (
+    <>
+      <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gradient-to-br from-primary/20 to-transparent blur-2xl opacity-0 transition-opacity group-hover:opacity-100" />
+      <div className="flex items-center justify-between">
+        <span className="rounded-full bg-foreground/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          {item.difficulty ?? "Case"}
+        </span>
+        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+          <Clock className="h-3 w-3" /> {item.duration_minutes ?? "—"} min
+        </span>
+      </div>
+      <h3 className="mt-4 font-display text-xl font-semibold leading-snug">{item.title}</h3>
+
+      <div className={locked ? "relative" : ""}>
+        <div style={locked ? { filter: "blur(4px)", pointerEvents: "none", userSelect: "none" } : undefined}>
+          <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{item.candidate_background}</p>
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {(item.grilling_themes ?? []).slice(0, 3).map((t) => (
+              <span key={t} className="rounded-full border border-border bg-card px-2 py-0.5 text-[11px] text-muted-foreground">
+                {t}
+              </span>
+            ))}
+          </div>
+          <div className="mt-5 flex items-center justify-between">
+            <span className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground">
+              <Flame className="h-3 w-3 text-primary" /> {item.panel_type}
+            </span>
+            {!locked && (
+              <Link
+                to="/archive/$slug" params={{ slug: item.slug }}
+                className="inline-flex items-center gap-1 text-sm font-semibold text-foreground transition-transform group-hover:translate-x-0.5"
+              >
+                Open case <ArrowRight className="h-4 w-4" />
+              </Link>
+            )}
+          </div>
+        </div>
+
+        {locked && (
+          <div
+            className="absolute inset-x-2 bottom-0 grid place-items-center rounded-[12px] p-4 text-center"
+            style={{ background: "rgba(253,254,255,0.6)" }}
+          >
+            <div className="flex items-center justify-center gap-1.5 text-[0.78rem] text-muted-foreground">
+              <Lock className="h-3 w-3" /> Read all {totalCount} reconstructions
+            </div>
+            <Link to="/signup" className="mt-2 rounded-full px-4 py-1.5 text-[0.78rem] font-bold text-white" style={{ background: "#4849F8" }}>
+              Join now
+            </Link>
+          </div>
+        )}
+      </div>
+
+      {item.slug === PUBLIC_ARCHIVE_SLUG && (
+        <span className="absolute right-4 top-4 rounded-full px-2 py-0.5 text-[9px] font-bold" style={{ background: "#DDF34430", color: "#0D0D1A" }}>
+          FREE READ
+        </span>
+      )}
+    </>
+  );
   return (
     <motion.div
       initial={{ opacity: 0, y: 18 }}
@@ -98,36 +169,7 @@ function ArchiveCard({ item, index }: { item: ArchiveItem; index: number }) {
       whileHover={{ y: -4 }}
       className="group glass-card relative overflow-hidden rounded-3xl p-6"
     >
-      <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gradient-to-br from-primary/20 to-transparent blur-2xl opacity-0 transition-opacity group-hover:opacity-100" />
-      <div className="flex items-center justify-between">
-        <span className="rounded-full bg-foreground/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-          {item.difficulty ?? "Case"}
-        </span>
-        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-          <Clock className="h-3 w-3" /> {item.duration_minutes ?? ", "} min
-        </span>
-      </div>
-      <h3 className="mt-4 font-display text-xl font-semibold leading-snug">{item.title}</h3>
-      <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{item.candidate_background}</p>
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        {(item.grilling_themes ?? []).slice(0, 3).map((t) => (
-          <span key={t} className="rounded-full border border-border bg-card px-2 py-0.5 text-[11px] text-muted-foreground">
-            {t}
-          </span>
-        ))}
-      </div>
-      <div className="mt-5 flex items-center justify-between">
-        <span className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground">
-          <Flame className="h-3 w-3 text-primary" /> {item.panel_type}
-        </span>
-        <Link
-          to="/archive/$slug"
-          params={{ slug: item.slug }}
-          className="inline-flex items-center gap-1 text-sm font-semibold text-foreground transition-transform group-hover:translate-x-0.5"
-        >
-          Open case <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
+      {inner}
     </motion.div>
   );
 }
