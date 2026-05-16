@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { Check, Zap, Crown } from "lucide-react";
+import { WhatsAppPricingCard } from "@/components/site/WhatsAppButton";
 
 export function Pricing() {
   return (
@@ -40,6 +41,7 @@ export function Pricing() {
               "The week before your interview, switch to The Day Before Protocol. Included.",
             ]}
             cta="Start sprint"
+            note="If you don't find a question in here that your panel actually asks, we'll refund you."
           />
           <PriceCard
             tag="The Consistency Protocol"
@@ -57,11 +59,32 @@ export function Pricing() {
               "The system remembers every answer you've ever given. It will catch your contradictions before the panel does.",
             ]}
             cta="Commit to protocol"
+            note="Every feature unlocks the moment you sign up. No waiting period, no drip."
           />
         </div>
+
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-[0.72rem]" style={{ color: "#ABC4FF" }}>
+          <div className="flex items-center gap-2"><LockMini /> Secure payment via Razorpay</div>
+          <span className="h-3 w-px" style={{ background: "#ABC4FF60" }} />
+          <div className="flex items-center gap-2"><CalMini /> Cancel anytime</div>
+          <span className="h-3 w-px" style={{ background: "#ABC4FF60" }} />
+          <div className="flex items-center gap-2"><ChatMini /> WhatsApp support available</div>
+        </div>
+
+        <WhatsAppPricingCard />
       </div>
     </section>
   );
+}
+
+function LockMini() {
+  return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ABC4FF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11 V8 C8 5 10 4 12 4 C14 4 16 5 16 8 V11"/></svg>;
+}
+function CalMini() {
+  return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ABC4FF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="4" y="6" width="16" height="14" rx="2"/><path d="M4 10 H20 M9 4 V8 M15 4 V8"/></svg>;
+}
+function ChatMini() {
+  return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ABC4FF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M4 18 L5 14 C 3.5 12 3.5 8 6 6 C 10 3 16 4 18 8 C 20 12 17 17 12 17 C 9 17 7 17 4 18 Z"/></svg>;
 }
 
 function PriceCard({
@@ -72,6 +95,7 @@ function PriceCard({
   features,
   cta,
   tone,
+  note,
 }: {
   tag: string;
   badge: string;
@@ -80,6 +104,7 @@ function PriceCard({
   features: string[];
   cta: string;
   tone: "default" | "featured";
+  note?: string;
 }) {
   const featured = tone === "featured";
   return (
@@ -133,6 +158,11 @@ function PriceCard({
         >
           {cta}
         </Link>
+        {note && (
+          <p className={`mt-3 text-center text-[0.72rem] ${featured ? "text-primary-foreground/80" : "text-muted-foreground"}`}>
+            {note}
+          </p>
+        )}
       </div>
     </motion.div>
   );
