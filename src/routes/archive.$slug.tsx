@@ -317,6 +317,24 @@ function Section({ title, icon, children }: { title: string; icon: React.ReactNo
   );
 }
 
+function InlinePrompt({ bold, plain, cta, to }: { bold: string; plain: string; cta: string; to: string }) {
+  const isHash = to.startsWith("/#");
+  return (
+    <div className="mt-8 flex flex-wrap items-center gap-4 rounded-[14px] p-5" style={{ background: "#4849F808", borderLeft: "4px solid #DDF344" }}>
+      <IllTarget size={28} stroke="#4849F8" />
+      <div className="min-w-0 flex-1">
+        <div className="font-display text-[0.95rem] font-bold">{bold}</div>
+        <div className="mt-1 text-[0.82rem] text-muted-foreground">{plain}</div>
+      </div>
+      {isHash ? (
+        <a href={to} className="rounded-full px-5 py-2 text-[0.82rem] font-bold text-white" style={{ background: "#4849F8" }}>{cta}</a>
+      ) : (
+        <Link to={to} className="rounded-full px-5 py-2 text-[0.82rem] font-bold text-white" style={{ background: "#4849F8" }}>{cta}</Link>
+      )}
+    </div>
+  );
+}
+
 function InfoCard({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) {
   return (
     <div className="glass-card rounded-2xl p-5">
