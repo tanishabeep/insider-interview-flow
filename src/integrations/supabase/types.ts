@@ -122,6 +122,39 @@ export type Database = {
         }
         Relationships: []
       }
+      leads: {
+        Row: {
+          converted: boolean
+          created_at: string
+          email: string
+          id: string
+          iim: string | null
+          sop_worry: string | null
+          source: string
+          stream: string | null
+        }
+        Insert: {
+          converted?: boolean
+          created_at?: string
+          email: string
+          id?: string
+          iim?: string | null
+          sop_worry?: string | null
+          source: string
+          stream?: string | null
+        }
+        Update: {
+          converted?: boolean
+          created_at?: string
+          email?: string
+          id?: string
+          iim?: string | null
+          sop_worry?: string | null
+          source?: string
+          stream?: string | null
+        }
+        Relationships: []
+      }
       open_ended_responses: {
         Row: {
           answer: string
