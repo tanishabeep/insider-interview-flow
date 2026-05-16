@@ -9,7 +9,14 @@ import { BuiltBy } from "@/components/site/BuiltBy";
 import { FeatureRows } from "@/components/site/FeatureRows";
 import { Pricing } from "@/components/site/Pricing";
 import { Footer } from "@/components/site/Footer";
+import { VulnerabilityScan } from "@/components/site/VulnerabilityScan";
+import { FearSection } from "@/components/site/FearSection";
+import { SuccessStories } from "@/components/site/SuccessStories";
+import { EmailCaptureSection } from "@/components/site/EmailCapture";
+import { ExitIntent } from "@/components/site/ExitIntent";
+import { WhatsAppFloating } from "@/components/site/WhatsAppButton";
 import { supabase } from "@/integrations/supabase/client";
+import { PUBLIC_ARCHIVE_SLUG } from "@/lib/public-archive";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -21,11 +28,17 @@ function Home() {
       <Navbar />
       <Hero />
       <SocialProof />
+      <FearSection />
       <FeatureRows />
+      <VulnerabilityScan />
       <BuiltBy />
+      <SuccessStories />
       <ArchiveTeaser />
+      <EmailCaptureSection />
       <Pricing />
       <Footer />
+      <ExitIntent />
+      <WhatsAppFloating />
     </main>
   );
 }
@@ -84,6 +97,11 @@ function ArchiveTeaser() {
               <Link to="/archive/$slug" params={{ slug: it.slug }} className="glass-card group block h-full rounded-3xl p-7">
                 <div className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
                   {it.panel_type ?? "IIM panel"} · {it.difficulty ?? "—"}
+                  {it.slug === PUBLIC_ARCHIVE_SLUG && (
+                    <span className="ml-2 rounded-full px-2 py-0.5 text-[9px] font-bold" style={{ background: "#DDF34430", color: "#0D0D1A" }}>
+                      FREE READ
+                    </span>
+                  )}
                 </div>
                 <h3 className="mt-3 font-display text-lg font-semibold leading-tight">{it.title}</h3>
                 <div className="mt-4 flex flex-wrap gap-1.5">

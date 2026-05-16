@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Activity, Brain, Flame, TrendingUp } from "lucide-react";
+import { InterviewDateStrip } from "@/components/site/InterviewDateStrip";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -48,6 +49,8 @@ export function Hero() {
                 <span className="border-b border-foreground/20 pb-0.5 transition-colors group-hover:border-foreground/60">Read a real interview first</span>
               </Link>
             </div>
+
+            <InterviewDateStrip />
 
             <FounderByline />
           </motion.div>

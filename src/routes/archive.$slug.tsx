@@ -8,9 +8,31 @@ import {
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/lib/auth";
+import { isPublicArchive } from "@/lib/public-archive";
+import { useNavigate } from "@tanstack/react-router";
+import { IllTarget } from "@/components/illustrations";
 
 export const Route = createFileRoute("/archive/$slug")({
   component: ArchiveDetail,
+  head: ({ params }) => {
+    const slug = params.slug;
+    // Derive a readable IIM label from the slug
+    const title = `${slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())} — Interview Reconstruction | IPM Ace`;
+    const desc = `Read the complete reconstruction of a real IIM interview. Full panel walkthrough, pressure moments, best and weak answers, and panel psychology analysis.`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: desc },
+        { property: "og:title", content: title },
+        { property: "og:description", content: desc },
+        { property: "og:type", content: "article" },
+      ],
+      links: [
+        { rel: "canonical", href: `https://insider-interview-flow.lovable.app/archive/${slug}` },
+      ],
+    };
+  },
 });
 
 type Phase = { phase: string; duration: string; questions: string[] };
@@ -35,9 +57,17 @@ type Archive = {
 
 function ArchiveDetail() {
   const { slug } = Route.useParams();
+  const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
   const [item, setItem] = useState<Archive | null>(null);
   const [loading, setLoading] = useState(true);
   const [openPhase, setOpenPhase] = useState<number | null>(0);
+
+  useEffect(() => {
+    if (!authLoading && !user && !isPublicArchive(slug)) {
+      navigate({ to: "/signup" });
+    }
+  }, [user, authLoading, slug, navigate]);
 
   useEffect(() => {
     supabase
@@ -105,6 +135,15 @@ function ArchiveDetail() {
             body={(item.grilling_themes ?? []).join(" · ")}
           />
         </div>
+
+        {isPublicArchive(slug) && !user && (
+          <InlinePrompt
+            bold="Your profile has different attack zones than this candidate."
+            plain="The free scan takes 90 seconds and shows you where your panel will press hardest."
+            cta="Find my attack zones"
+            to="/#vulnerability-scan"
+          />
+        )}
 
         {/* Interview flow timeline */}
         <Section title="Interview flow" icon={<BookOpen className="h-4 w-4" />}>
@@ -180,6 +219,22 @@ function ArchiveDetail() {
           </div>
         </Section>
 
+        {isPublicArchive(slug) && !user ? (
+          <InlinePrompt
+            bold="Practiced answers don't survive this kind of pressure."
+            plain="The Interview Lab runs you through exactly this. Adaptive. No scripts. No easy exits."
+            cta="Try the Interview Lab"
+            to="/signup"
+          />
+        ) : user ? (
+          <InlinePrompt
+            bold="Think you could handle this pressure moment?"
+            plain="Open it in the Interview Lab. The AI panel won't let you off as easily as you think."
+            cta="Practice this panel style"
+            to="/lab"
+          />
+        ) : null}
+
         {/* Best vs Weak answers */}
         <Section title="What worked vs what didn't" icon={<CheckCircle2 className="h-4 w-4 text-emerald-500" />}>
           <div className="grid gap-4 md:grid-cols-2">
@@ -219,6 +274,19 @@ function ArchiveDetail() {
           </ol>
         </Section>
 
+        {isPublicArchive(slug) && !user && (
+          <div className="mt-14 grid gap-6 rounded-[20px] p-8 text-white md:grid-cols-[1.2fr_1fr] md:items-center" style={{ background: "#4849F8" }}>
+            <div>
+              <h3 className="font-display text-2xl font-extrabold">There are 47 more of these.</h3>
+              <p className="mt-2 text-[0.9rem] opacity-90">Plus the tools to prepare for yours specifically.</p>
+            </div>
+            <div className="flex flex-col gap-2 md:items-end">
+              <Link to="/signup" className="rounded-full bg-white px-5 py-2.5 text-[0.85rem] font-bold" style={{ color: "#4849F8" }}>Join now — ₹299</Link>
+              <Link to="/signup" className="rounded-full border border-white px-5 py-2.5 text-[0.85rem] font-bold text-white">Start free — no card needed</Link>
+            </div>
+          </div>
+        )}
+
         <div className="mt-12 mb-16 flex flex-wrap items-center justify-between gap-4 rounded-3xl bg-gradient-to-br from-primary/10 via-card to-card p-8">
           <div>
             <h3 className="font-display text-xl font-semibold">Practice this exact panel style</h3>
@@ -246,6 +314,24 @@ function Section({ title, icon, children }: { title: string; icon: React.ReactNo
       </div>
       {children}
     </section>
+  );
+}
+
+function InlinePrompt({ bold, plain, cta, to }: { bold: string; plain: string; cta: string; to: string }) {
+  const isHash = to.startsWith("/#");
+  return (
+    <div className="mt-8 flex flex-wrap items-center gap-4 rounded-[14px] p-5" style={{ background: "#4849F808", borderLeft: "4px solid #DDF344" }}>
+      <IllTarget size={28} stroke="#4849F8" />
+      <div className="min-w-0 flex-1">
+        <div className="font-display text-[0.95rem] font-bold">{bold}</div>
+        <div className="mt-1 text-[0.82rem] text-muted-foreground">{plain}</div>
+      </div>
+      {isHash ? (
+        <a href={to} className="rounded-full px-5 py-2 text-[0.82rem] font-bold text-white" style={{ background: "#4849F8" }}>{cta}</a>
+      ) : (
+        <Link to={to} className="rounded-full px-5 py-2 text-[0.82rem] font-bold text-white" style={{ background: "#4849F8" }}>{cta}</Link>
+      )}
+    </div>
   );
 }
 
