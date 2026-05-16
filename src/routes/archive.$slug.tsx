@@ -8,9 +8,31 @@ import {
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/lib/auth";
+import { isPublicArchive } from "@/lib/public-archive";
+import { useNavigate } from "@tanstack/react-router";
+import { IllTarget } from "@/components/illustrations";
 
 export const Route = createFileRoute("/archive/$slug")({
   component: ArchiveDetail,
+  head: ({ params }) => {
+    const slug = params.slug;
+    // Derive a readable IIM label from the slug
+    const title = `${slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())} — Interview Reconstruction | IPM Ace`;
+    const desc = `Read the complete reconstruction of a real IIM interview. Full panel walkthrough, pressure moments, best and weak answers, and panel psychology analysis.`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: desc },
+        { property: "og:title", content: title },
+        { property: "og:description", content: desc },
+        { property: "og:type", content: "article" },
+      ],
+      links: [
+        { rel: "canonical", href: `https://insider-interview-flow.lovable.app/archive/${slug}` },
+      ],
+    };
+  },
 });
 
 type Phase = { phase: string; duration: string; questions: string[] };
@@ -35,9 +57,17 @@ type Archive = {
 
 function ArchiveDetail() {
   const { slug } = Route.useParams();
+  const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
   const [item, setItem] = useState<Archive | null>(null);
   const [loading, setLoading] = useState(true);
   const [openPhase, setOpenPhase] = useState<number | null>(0);
+
+  useEffect(() => {
+    if (!authLoading && !user && !isPublicArchive(slug)) {
+      navigate({ to: "/signup" });
+    }
+  }, [user, authLoading, slug, navigate]);
 
   useEffect(() => {
     supabase
